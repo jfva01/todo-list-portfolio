@@ -171,3 +171,4 @@ F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\refint\T
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.pdb
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.genruntimeconfig.cache
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\ref\TodoApi.dll
+F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.sourcelink.json
