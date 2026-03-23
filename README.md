@@ -27,7 +27,7 @@ Próximamente
 ## 📷 Vista previa
 
 <p align="center">
-  <img src="src/assets/images/api-endpoints.png" width="800"/>
+  <img src="frontend/src/assets/images/api-endpoints.png" width="800"/>
   <img src="src/assets/images/add-form.png" width="800"/>
   <img src="src/assets/images/add-task.png" width="800"/>
   <img src="src/assets/images/filters-1.png" width="800"/>
