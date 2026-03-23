@@ -26,14 +26,22 @@ Próximamente
 
 ## 📷 Vista previa
 
-Próximamente
-
-<!-- Puedes agregar capturas así:
 <p align="center">
-  <img src="ruta/a/captura-1.png" width="900"/>
-  <img src="ruta/a/captura-2.png" width="900"/>
+  <img src="src/assets/images/api-endpoints.png" width="800"/>
+  <img src="src/assets/images/add-form.png" width="800"/>
+  <img src="src/assets/images/add-task.png" width="800"/>
+  <img src="src/assets/images/filters-1.png" width="800"/>
+  <img src="src/assets/images/filters-2.png" width="800"/>
+  <img src="src/assets/images/filters-3.png" width="800"/>
+  <img src="src/assets/images/task-list-ordered.png" width="800"/>
+  <img src="src/assets/images/task-list-ordered-1.png" width="800"/>
+  <img src="src/assets/images/task-list-ordered-3.png" width="800"/>
+  <img src="src/assets/images/completed-tasks.png" width="800"/>
+  <img src="src/assets/images/task-editing.png" width="800"/>
+  <img src="src/assets/images/popup-notification.png" width="800"/>
+  <img src="src/assets/images/delete-confirmation.png" width="800"/>
+  <img src="src/assets/images/task-editing.png" width="800"/>
 </p>
--->
 
 ---
 
