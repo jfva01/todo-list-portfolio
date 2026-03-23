@@ -111,3 +111,50 @@ El frontend fue desarrollado con una estructura basada en componentes reutilizab
     /types
     App.tsx
     main.tsx
+```
+---
+
+##🔌 Endpoints principales
+
+- GET /api/tareas → obtener todas las tareas
+- GET /api/tareas/{id} → obtener tarea por id
+- POST /api/tareas → crear nueva tarea
+- PUT /api/tareas/{id} → actualizar tarea
+- DELETE /api/tareas/{id} → eliminar tarea
+
+---
+
+## 🧪 Testing
+
+Se implementaron pruebas unitarias para la capa de servicios, validando escenarios como:
+
+- Obtención de tareas
+- Creación de tareas válidas e inválidas
+- Actualización de tareas
+- Eliminación de tareas
+- Manejo de excepciones del repositorio
+- Validaciones de reglas de negocio
+
+Esto permite asegurar el comportamiento esperado de la lógica antes de llegar al controlador o a la base de datos.
+
+---
+
+## ♿ Accesibilidad y UX
+
+- Labels semánticos en formularios
+- Estados de foco visibles
+- Toast accesible con aria-live
+- Confirmación antes de eliminar tareas
+- Feedback visual para acciones exitosas o fallidas
+
+---
+
+## 📌 Mejoras futuras
+
+- Autenticación de usuarios
+- Persistencia de filtros por sesión
+- Confirmación con modal custom en lugar de window.confirm
+- Tests de integración para endpoints
+- Deploy completo frontend + backend + base de datos en la nube
+- Modo oscuro
+- Paginación o virtualización para grandes volúmenes de tareas
