@@ -114,7 +114,7 @@ El frontend fue desarrollado con una estructura basada en componentes reutilizab
 ```
 ---
 
-##🔌 Endpoints principales
+## 🔌 Endpoints principales
 
 - GET /api/tareas → obtener todas las tareas
 - GET /api/tareas/{id} → obtener tarea por id
