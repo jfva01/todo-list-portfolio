@@ -158,3 +158,9 @@ Esto permite asegurar el comportamiento esperado de la lógica antes de llegar a
 - Deploy completo frontend + backend + base de datos en la nube
 - Modo oscuro
 - Paginación o virtualización para grandes volúmenes de tareas
+
+---
+
+## 👨‍💻 Autor
+
+Jorge Vargas
