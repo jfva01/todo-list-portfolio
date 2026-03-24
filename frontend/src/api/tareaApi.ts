@@ -4,7 +4,7 @@ import type { Tarea } from "../types/Tarea";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const getTareas = async (): Promise<Tarea[]> => {
-  const response = await fetch(API_URL);
+  const response = await fetch(`${API_URL}/api/tareas`);
 
   if (!response.ok) {
     throw new Error("Error al obtener tareas");
@@ -14,7 +14,7 @@ export const getTareas = async (): Promise<Tarea[]> => {
 };
 
 export const createTarea = async (tarea: { titulo: string; descripcion?: string }) => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}/api/tareas`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

@@ -42,16 +42,15 @@ builder.Host.UseSerilog();
 // Habilitamos CORS para permitir que el frontend (en otro puerto) acceda a la API sin problemas de seguridad.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend",
-        policy =>
-        {
-            policy.WithOrigins(
-                "http://localhost:5173",
-                "https://ashy-desert-0d8175810.1.azurestaticapps.net"
-            )
-                  .AllowAnyMethod()
-                  .AllowAnyHeader();
-        });
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:5173",
+            "https://ashy-desert-0d8175810.1.azurestaticapps.net"
+        )
+        .AllowAnyMethod()
+        .AllowAnyHeader();
+    });
 });
 
 var app = builder.Build();
@@ -65,6 +64,8 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
 app.UseAuthorization();
+
+app.MapControllers();
 
 app.MapGet("/", () => "Todo API online");
 app.MapControllers();
