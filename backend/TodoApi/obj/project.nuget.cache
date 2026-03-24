@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "A1KBOObaPE4=",
+  "dgSpecHash": "I0UfIq1Czdg=",
   "success": true,
-  "projectFilePath": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi\\TodoApi.csproj",
+  "projectFilePath": "f:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi\\TodoApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Jorge Vargas\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\Jorge Vargas\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",

@@ -16,7 +16,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
-
 // Usamos Inyección de Dependencias para el contexto de la base de datos
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(
@@ -60,14 +59,6 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
-    ?? Environment.GetEnvironmentVariable("CONNECTION_STRING");
-
-builder.Services.AddDbContext<TodoDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-
-builder.Services.AddControllersWithViews();
-
 // Habilitamos CORS para permitir que el frontend (en otro puerto) acceda a la API sin problemas de seguridad.
 builder.Services.AddCors(options =>
 {
@@ -81,22 +72,18 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseCors("AllowFrontend");
-app.MapControllers();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseRouting();
+app.UseCors("AllowFrontend");
 app.UseAuthorization();
 
-app.MapDefaultControllerRoute();
+app.MapGet("/", () => "Todo API online");
+app.MapControllers();
 
 app.Run();
