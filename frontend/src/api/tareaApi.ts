@@ -30,7 +30,7 @@ export const createTarea = async (tarea: { titulo: string; descripcion?: string 
 };
 
 export const updateTarea = async (tarea: Tarea) => {
-  const response = await fetch(`${API_URL}/${tarea.id}`, {
+  const response = await fetch(`${API_URL}/api/tareas/${tarea.id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -44,7 +44,7 @@ export const updateTarea = async (tarea: Tarea) => {
 };
 
 export const deleteTarea = async (id: number) => {
-  const response = await fetch(`${API_URL}/${id}`, {
+  const response = await fetch(`${API_URL}/api/tareas/${id}`, {
     method: "DELETE",
   });
 
