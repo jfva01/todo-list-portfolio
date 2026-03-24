@@ -215,7 +215,7 @@ Publicación manual controlada del backend desde VS Code
 
 ---
 
-##🧠 Desafíos y aprendizajes
+## 🧠 Desafíos y aprendizajes
 
 - Configuración de CORS entre servicios distribuidos
 - Manejo de variables de entorno en Vite (build-time)
