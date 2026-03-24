@@ -1,4 +1,4 @@
 {
     "appService.defaultWebAppToDeploy": "/subscriptions/f44b8586-a9fb-46c0-93b1-18ef36d47dfa/resourceGroups/vmpc/providers/Microsoft.Web/sites/todolistapi",
-    "appService.deploySubpath": "backend\\TodoApi"
+    "appService.deploySubpath": "backend\\TodoApi\\bin\\Release\\net8.0\\publish"
 }

@@ -1,6 +1,7 @@
 import type { Tarea } from "../types/Tarea";
 
-const API_URL = "http://localhost:5021/api/tareas";
+//const API_URL = "http://localhost:5021/api/tareas";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const getTareas = async (): Promise<Tarea[]> => {
   const response = await fetch(API_URL);
