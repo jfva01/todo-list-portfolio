@@ -168,6 +168,62 @@ Esto permite asegurar el comportamiento esperado de la lógica antes de llegar a
 
 ---
 
+## ☁️ Despliegue en la nube (Azure)
+
+Este proyecto fue desplegado completamente en la nube utilizando servicios de Microsoft Azure, separando frontend y backend para una arquitectura moderna y escalable.
+
+## 🔧 Backend
+- Desarrollado con .NET 8 + ASP.NET Core
+- Desplegado en Azure App Service
+- API REST conectada a base de datos en la nube
+- Documentación disponible vía Swagger
+
+---
+
+## 🗄️ Base de datos
+- Azure SQL Database
+- Configuración de firewall para acceso seguro
+- Conexión mediante Entity Framework Core
+
+---
+
+## 🎨 Frontend
+- Desarrollado con React + Vite
+- Desplegado en Azure Static Web Apps
+- Integración con backend mediante variables de entorno (VITE_API_URL)
+
+---
+
+## 🔐 Configuraciones clave
+CORS configurado en el backend para permitir acceso desde el frontend desplegado
+Uso de variables de entorno para separar configuraciones entre desarrollo y producción
+Manejo de conexión segura a base de datos mediante connection strings en Azure
+
+---
+
+## 🚀 CI/CD
+Integración continua mediante GitHub Actions
+Build y despliegue automático del frontend con Azure Static Web Apps
+Publicación manual controlada del backend desde VS Code
+
+---
+
+## 🌍 URLs del proyecto
+🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net/api/tareas)
+🔗 Backend (API): [(URL de App Service)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net)
+📄 Swagger: [(URL + /swagger)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net/swagger/index.html)
+
+---
+
+## 🧠 Desafíos y aprendizajes
+
+- Configuración de CORS entre servicios distribuidos
+- Manejo de variables de entorno en Vite (build-time)
+- Resolución de errores de despliegue en Azure (500.30, CORS, connection issues)
+- Separación de frontend y backend en entornos productivos
+
+---
+
 ## 👨‍💻 Autor
 
 Jorge Vargas
