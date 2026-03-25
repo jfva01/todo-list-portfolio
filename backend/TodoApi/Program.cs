@@ -3,7 +3,9 @@ using TodoApi.Data;
 using TodoApi.Middleware;
 using TodoApi.Repositories;
 using TodoApi.Services;
-using Serilog; //Soporta múltiples destinos (DB, archivo, consola, etc.)
+using Serilog;
+using Serilog.Sinks.MSSqlServer; //Soporta múltiples destinos (DB, archivo, consola, etc.)
+using Serilog.Debugging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +19,10 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection") ??
+    Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection");
+
 // Usamos inyección de Dependencias para los repositorios y servicios
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
 builder.Services.AddScoped<ITareaService, TareaService>();
@@ -27,15 +33,42 @@ builder.Services.AddScoped<ITareaService, TareaService>();
     LogError → fallos reales
 */
 
-Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
+// Log.Logger = new LoggerConfiguration()
+//     .MinimumLevel.Information()
     
-    // Agregamos filtros para reducir el ruido de logs de Microsoft y System
+//     // Agregamos filtros para reducir el ruido de logs de Microsoft y System
+//     .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
+//     .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Warning)
+
+//     .WriteTo.Console()
+//     .CreateLogger();
+
+try
+{
+    Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
     .MinimumLevel.Override("System", Serilog.Events.LogEventLevel.Warning)
-
     .WriteTo.Console()
+    .WriteTo.MSSqlServer(
+        connectionString: connectionString,
+        sinkOptions: new MSSqlServerSinkOptions
+        {
+            TableName = "Logs",
+            AutoCreateSqlTable = false
+        }
+    )
     .CreateLogger();
+}
+catch (Exception ex)
+{
+    // fallback: solo consola
+    Log.Logger = new LoggerConfiguration()
+        .WriteTo.Console()
+        .CreateLogger();
+
+    Log.Error(ex, "Error configurando Serilog MSSqlServer");
+}
 
 builder.Host.UseSerilog();
 
