@@ -17,7 +17,9 @@ builder.Services.AddControllers();
 
 // Usamos Inyección de Dependencias para el contexto de la base de datos
 builder.Services.AddDbContext<TodoDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")
+    ));
 
 var connectionString =
     builder.Configuration.GetConnectionString("DefaultConnection") ??
