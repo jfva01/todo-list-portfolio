@@ -28,6 +28,7 @@ var connectionString =
 // Usamos inyección de Dependencias para los repositorios y servicios
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
 builder.Services.AddScoped<ITareaService, TareaService>();
+builder.Services.AddScoped<JwtService>();
 
 /*
     LogInformation → flujo normal
