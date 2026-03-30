@@ -7,8 +7,7 @@ namespace TodoApi.Models
         public string? Descripcion { get; set; }
         public bool Completada { get; set; }
         public DateTime FechaCreacion { get; set; } = DateTime.UtcNow;
-        // Relación con Usuario
-        public long? UsuarioId { get; set; }
-        public Usuario? Usuario { get; set; }
+        public long UsuarioId { get; set; }
+        public Usuario Usuario { get; set; } = null!;
     }
 }

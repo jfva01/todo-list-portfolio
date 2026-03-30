@@ -6,7 +6,7 @@ namespace TodoApi.Repositories;
 
 public interface ITareaRepository
 {
-    Task<IEnumerable<Tarea>> GetAllAsync();
+    Task<IEnumerable<Tarea>> GetAllAsync(long UsuarioId);
 
     Task<Tarea?> GetByIdAsync(int id);
 

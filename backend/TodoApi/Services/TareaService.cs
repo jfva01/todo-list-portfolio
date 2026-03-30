@@ -1,10 +1,9 @@
 using TodoApi.Models;
 
 namespace TodoApi.Services;
-
 public interface ITareaService
 {
-    Task<IEnumerable<Tarea>> GetAllTareasAsync();
+    Task<IEnumerable<Tarea>> GetAllAsync(long UsuarioId);
 
     Task<Tarea?> GetTareaByIdAsync(int id);
 

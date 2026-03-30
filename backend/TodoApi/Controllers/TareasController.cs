@@ -26,7 +26,15 @@ public class TareasController : ControllerBase
     {
         _logger.LogInformation("Obteniendo todas las tareas.");
 
-        var tareas = await _service.GetAllTareasAsync();
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            _logger.LogError("No se pudo obtener el ID del usuario autenticado.");
+            return Unauthorized("No se pudo obtener el ID del usuario autenticado.");
+        }
+
+        var tareas = await _service.GetAllAsync(long.Parse(userId));
 
         return Ok(tareas);
     }
@@ -35,6 +43,14 @@ public class TareasController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         _logger.LogInformation($"Obteniendo tarea por ID {id}.");
+
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            _logger.LogError("No se pudo obtener el ID del usuario autenticado.");
+            return Unauthorized("No se pudo obtener el ID del usuario autenticado.");
+        }
 
         var tarea = await _service.GetTareaByIdAsync(id);
 
@@ -53,10 +69,19 @@ public class TareasController : ControllerBase
     {
         _logger.LogInformation("Creando nueva tarea.");
 
+        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+
+        if (userId == null)
+        {
+            _logger.LogError("No se pudo obtener el ID del usuario autenticado.");
+            return Unauthorized("No se pudo obtener el ID del usuario autenticado.");
+        }
+
         var tarea = new Tarea
         {
             Titulo = dto.Titulo,
-            Descripcion = dto.Descripcion
+            Descripcion = dto.Descripcion,
+            UsuarioId = long.Parse(userId)
         };
 
         var nueva = await _service.CreateTareaAsync(tarea);
@@ -66,8 +91,9 @@ public class TareasController : ControllerBase
             Id = nueva.Id,
             Titulo = nueva.Titulo,
             Descripcion = nueva.Descripcion,
-            Completada = nueva.Completada,
-            FechaCreacion = nueva.FechaCreacion
+            Completada = false,
+            FechaCreacion = nueva.FechaCreacion,
+            UsuarioId = long.Parse(userId)
         };
 
         _logger.LogInformation($"Nueva tarea creada con id {resultDto.Id}.");

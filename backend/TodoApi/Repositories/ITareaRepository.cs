@@ -15,9 +15,11 @@ public class TareaRepository : ITareaRepository
         _context = context;
     }
 
-    public async Task<IEnumerable<Tarea>> GetAllAsync()
+    public async Task<IEnumerable<Tarea>> GetAllAsync(long UsuarioId)
     {
-        return await _context.Tareas.ToListAsync();
+        return await _context.Tareas
+            .Where(t => t.UsuarioId == UsuarioId)
+            .ToListAsync();
     }
 
     public async Task<Tarea?> GetByIdAsync(int id)

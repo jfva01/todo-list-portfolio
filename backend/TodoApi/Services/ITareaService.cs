@@ -12,9 +12,9 @@ public class TareaService : ITareaService
         _repository = repository;
     }
 
-    public async Task<IEnumerable<Tarea>> GetAllTareasAsync()
+    public async Task<IEnumerable<Tarea>> GetAllAsync(long UsuarioId)
     {
-        return await _repository.GetAllAsync();
+        return await _repository.GetAllAsync(UsuarioId);
     }
 
     public async Task<Tarea?> GetTareaByIdAsync(int id)

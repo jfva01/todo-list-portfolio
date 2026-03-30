@@ -79,6 +79,7 @@ namespace TodoApi.Controllers
             var token = _jwtService.GenerateToken(user);
 
             _logger.LogInformation("Sesión iniciada correctamente. Usuario: " + user.Email, user.Email);
+            // Devolver el token JWT al cliente
             return Ok(new { token });
         }
     }
