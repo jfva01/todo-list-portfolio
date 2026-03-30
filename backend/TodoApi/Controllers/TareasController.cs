@@ -2,11 +2,13 @@ using Microsoft.AspNetCore.Mvc;
 using TodoApi.DTOs;
 using TodoApi.Models;
 using TodoApi.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TodoApi.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 public class TareasController : ControllerBase
 {
     private readonly ITareaService _service;

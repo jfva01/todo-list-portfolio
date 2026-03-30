@@ -174,3 +174,4 @@ F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\ref\Todo
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.sourcelink.json
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\appsettings.Production.json
+F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll

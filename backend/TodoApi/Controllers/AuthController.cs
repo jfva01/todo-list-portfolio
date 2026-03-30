@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TodoApi.Data;
 using TodoApi.DTOs;
 using TodoApi.Models;
@@ -12,7 +13,6 @@ namespace TodoApi.Controllers
     {
         private readonly TodoDbContext _context;
         private readonly ILogger<TareasController> _logger;
-
         private readonly JwtService _jwtService;
 
         public AuthController(TodoDbContext context, ILogger<TareasController> logger, JwtService jwtService)
@@ -27,11 +27,11 @@ namespace TodoApi.Controllers
         {
             _logger.LogInformation("Creando nuevo usuario.");
             // Verificar si el correo ya está registrado
-            var existingUser = _context.Usuarios
-                .FirstOrDefault(u => u.Email == request.Email);
+            var existingUser = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
 
             if (existingUser != null){
-                _logger.LogError("El correo ya está registrado. Email: {Email}", request.Email);
+                _logger.LogError($"El correo ya está registrado. Email: {request.Email}");
                 return BadRequest("El correo ya está registrado.");
             }
             // Creamos el Hash de la contraseña usando BCrypt
@@ -47,7 +47,7 @@ namespace TodoApi.Controllers
             _context.Usuarios.Add(user);
             await _context.SaveChangesAsync();
 
-            _logger.LogInformation("Usuario registrado correctamente. Email: {Email}", user.Email);
+            _logger.LogInformation("Usuario registrado correctamente. Email: " + user.Email, user.Email);
             return Ok("Usuario registrado correctamente.");
         }
 
@@ -56,8 +56,8 @@ namespace TodoApi.Controllers
         {
             _logger.LogInformation("Intentando iniciar sesión.");
             // Buscar el usuario por correo electrónico
-            var user = _context.Usuarios
-                .FirstOrDefault(u => u.Email == request.Email);
+            var user = await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Email == request.Email);
             // Verificar si el usuario existe
             if (user == null)
             {
@@ -78,7 +78,7 @@ namespace TodoApi.Controllers
             // Generar el token JWT para el usuario autenticado
             var token = _jwtService.GenerateToken(user);
 
-            _logger.LogInformation("Sesión iniciada correctamente. Usuario: {Email}", user.Email);
+            _logger.LogInformation("Sesión iniciada correctamente. Usuario: " + user.Email, user.Email);
             return Ok(new { token });
         }
     }
