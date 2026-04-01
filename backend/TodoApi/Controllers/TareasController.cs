@@ -43,7 +43,7 @@ public class TareasController : ControllerBase
     public async Task<IActionResult> GetById(int id)
     {
         _logger.LogInformation($"Obteniendo tarea por ID {id}.");
-
+        // Obtener el ID del usuario autenticado
         var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
 
         if (userId == null)
@@ -57,6 +57,12 @@ public class TareasController : ControllerBase
         if (tarea == null){
             _logger.LogError($"No existe una tarea con id {id}.");
             return NotFound($"No existe una tarea con id {id}.");
+        }
+        // Verificar que la tarea pertenece al usuario autenticado
+        if (tarea.UsuarioId != long.Parse(userId))
+        {
+            _logger.LogWarning($"El usuario {userId} intentó acceder a una tarea que no le pertenece.");
+            return Forbid();
         }
 
         _logger.LogInformation($"Tarea con ID {id} encontrada correctamente.");
@@ -104,6 +110,10 @@ public class TareasController : ControllerBase
     public async Task<IActionResult> Update(int id, UpdateTareaDto dto)
     {
         _logger.LogInformation($"Intentando actualizar tarea con id {id}.");
+        // Obtener el ID del usuario autenticado
+        var userId = long.Parse(
+            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value
+        );
 
         var tareaExistente = await _service.GetTareaByIdAsync(id);
 
@@ -111,6 +121,12 @@ public class TareasController : ControllerBase
         {
             _logger.LogError($"No se encontró tarea con id {id} para actualizar.");
             return NotFound($"No existe una tarea con id {id}.");
+        }
+        // Verificar que la tarea pertenece al usuario autenticado
+        if (tareaExistente.UsuarioId != userId)
+        {
+            _logger.LogWarning($"El usuario {userId} intentó modificar una tarea que no le pertenece.");
+            return Forbid();
         }
 
         // Mapear DTO → entidad
@@ -130,12 +146,23 @@ public class TareasController : ControllerBase
     {
         _logger.LogInformation($"Intentando eliminar tarea con id {id}", id);
 
+        // Obtener el ID del usuario autenticado
+        var userId = long.Parse(
+            User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)!.Value
+        );
+
         var tareaExistente = await _service.GetTareaByIdAsync(id);
 
         if (tareaExistente == null)
         {
             _logger.LogWarning($"No se encontró tarea con id {id} para eliminar.");
             return NotFound($"No existe una tarea con id {id}.");
+        }
+        // Verificar que la tarea pertenece al usuario autenticado
+        if (tareaExistente.UsuarioId != userId)
+        {
+            _logger.LogWarning($"El usuario {userId} intentó eliminar una tarea que no le pertenece.");
+            return Forbid();
         }
 
         await _service.DeleteTareaAsync(id);
