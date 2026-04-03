@@ -130,8 +130,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-app.UseMiddleware<ExceptionMiddleware>();
-
 // Configure the HTTP request pipeline.
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -142,6 +140,8 @@ app.UseCors("AllowFrontend");
 // Habilitamos la autenticación y autorización en el pipeline de la aplicación.
 app.UseAuthentication();
 app.UseAuthorization();
+// Agregamos el middleware de manejo de excepciones personalizado para capturar errores no controlados y devolver respuestas JSON consistentes.
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();
 

@@ -31,8 +31,8 @@ public class ExceptionMiddleware
 
             var response = new
             {
-                message = "Error interno del servidor. Por favor, inténtalo de nuevo más tarde.",
-                detail = ex.Message
+                message = "Error interno del servidor. Por favor, inténtalo de nuevo más tarde."
+                //detail = ex.Message
             };
 
             var json = JsonSerializer.Serialize(response);

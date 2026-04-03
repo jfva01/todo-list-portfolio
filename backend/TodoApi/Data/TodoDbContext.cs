@@ -21,6 +21,9 @@ namespace TodoApi.Data
                 .HasOne(t => t.Usuario)
                 .WithMany(u => u.Tarea)
                 .HasForeignKey(t => t.UsuarioId);
+
+            modelBuilder.Entity<Tarea>()
+                .HasIndex(t => t.UsuarioId);
         }
     }
 }

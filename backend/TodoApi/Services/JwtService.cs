@@ -17,6 +17,7 @@ namespace TodoApi.Services
 
         public string GenerateToken(Usuario usuario)
         {
+            // Crear los claims para el token JWT, incluyendo el ID del usuario y su email
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, usuario.Id.ToString()),
@@ -31,12 +32,14 @@ namespace TodoApi.Services
                 key,
                 SecurityAlgorithms.HmacSha256
             );
-
+            // Crear el token JWT con la información de los claims, el emisor, el público, la fecha de expiración y las credenciales de firma
             var token = new JwtSecurityToken(
                 issuer: _config["Jwt:Issuer"],
                 audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(2),
+                expires: DateTime.UtcNow.AddMinutes(
+                    int.Parse(_config["Jwt:ExpireMinutes"]!)
+                ),
                 signingCredentials: creds
             );
 
