@@ -1,54 +1,26 @@
 import type { Tarea } from "../types/Tarea";
-
-//const API_URL = "http://localhost:5021/api/tareas";
-const API_URL = import.meta.env.VITE_API_URL;
+import { apiClient } from "./apiClient";
 
 export const getTareas = async (): Promise<Tarea[]> => {
-  const response = await fetch(`${API_URL}/api/tareas`);
-
-  if (!response.ok) {
-    throw new Error("Error al obtener tareas");
-  }
-
-  return await response.json();
+  return apiClient<Tarea[]>("/tareas");
 };
 
 export const createTarea = async (tarea: { titulo: string; descripcion?: string }) => {
-  const response = await fetch(`${API_URL}/api/tareas`, {
+  return apiClient<Tarea>("/tareas", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(tarea),
   });
-
-  if (!response.ok) {
-    throw new Error("Error al crear tarea");
-  }
-
-  return await response.json();
 };
 
 export const updateTarea = async (tarea: Tarea) => {
-  const response = await fetch(`${API_URL}/api/tareas/${tarea.id}`, {
+  return apiClient<void>(`/tareas/${tarea.id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
     body: JSON.stringify(tarea),
   });
-
-  if (!response.ok) {
-    throw new Error("Error al actualizar tarea");
-  }
 };
 
 export const deleteTarea = async (id: number) => {
-  const response = await fetch(`${API_URL}/api/tareas/${id}`, {
+  return apiClient<void>(`/tareas/${id}`, {
     method: "DELETE",
   });
-
-  if (!response.ok) {
-    throw new Error("Error al eliminar tarea");
-  }
 };
