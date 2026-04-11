@@ -7,8 +7,12 @@ import { Notification } from "../components/Notification";
 import { TaskList } from "../components/TaskList";
 import { updateTarea } from "../api/tareaApi";
 import { deleteTarea } from "../api/tareaApi";
+import { Header } from "../components/Header";
+import { useInactivityTimeout } from "../hooks/useInactivityTimeout";
 
 export default function DashboardPage() {
+    useInactivityTimeout();
+
     const { tareas, loading, fetchTareas } = useTareas();
     const [notification, setNotification] = useState<NotificationType | null>(null);
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -194,13 +198,10 @@ export default function DashboardPage() {
         ? "No hay tareas aún. Agrega la primera tarea usando el formulario de arriba."
         : "No se encontraron tareas con los filtros actuales.";
 
-
     return (
         <div className="min-h-screen bg-slate-100 py-10 px-4">
             <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6">
-                <h1 className="text-3xl font-bold text-center text-slate-800 mb-6">
-                    ToDo App
-                </h1>
+                <Header />
 
                 <Notification
                     notification={notification}

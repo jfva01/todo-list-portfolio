@@ -1,9 +1,18 @@
+import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../auth/authService";
+import { getToken } from "../auth/tokenService";
 
 export default function LoginPage() {
     const navigate = useNavigate(); // Hook para redirigir al usuario después de un login exitoso
+    // useEffect para verificar si el usuario ya tiene un token válido al cargar la página. 
+    // Si es así, se redirige automáticamente a la página principal.
+    useEffect(() => {
+        if (getToken()) {
+            navigate("/", { replace: true });
+        }
+    }, []);
     
     const [email, setEmail] = useState(""); // Estado para almacenar el email ingresado por el usuario
     const [password, setPassword] = useState(""); // Estado para almacenar la contraseña ingresada por el usuario
@@ -17,7 +26,8 @@ export default function LoginPage() {
 
         setError(null);
         setLoading(true);
-
+        // Intentamos realizar el login con las credenciales ingresadas. 
+        // Si es exitoso, se redirige a la página principal.
         try {
             await loginRequest(email, password);
             navigate("/");
