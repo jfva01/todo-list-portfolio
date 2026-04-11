@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import DashboardPage from "./pages/DashbardPage";
+import DashboardPage from "./pages/DashboardPage";
 
 function App() {  
   return (

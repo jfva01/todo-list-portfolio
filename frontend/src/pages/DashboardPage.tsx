@@ -9,10 +9,11 @@ import { updateTarea } from "../api/tareaApi";
 import { deleteTarea } from "../api/tareaApi";
 import { Header } from "../components/Header";
 import { useInactivityTimeout } from "../hooks/useInactivityTimeout";
+import { ConfirmModal } from "../components/ConfirmModal";
 
 export default function DashboardPage() {
     useInactivityTimeout();
-
+    // Estados para manejar tareas, notificaciones, edición, búsqueda y filtrado
     const { tareas, loading, fetchTareas } = useTareas();
     const [notification, setNotification] = useState<NotificationType | null>(null);
     const [editingId, setEditingId] = useState<number | null>(null);
@@ -20,22 +21,29 @@ export default function DashboardPage() {
     const [editDescripcion, setEditDescripcion] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
     const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas");
+    // Estado para controlar el modal de confirmación de eliminación
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [tareaToDelete, setTareaToDelete] = useState<number | null>(null);
 
     // Eliminar una tarea
-    const handleDelete = async (id: number) => {
-        const confirmacion = window.confirm(
-            "¿Seguro quieres eliminar esta tarea?"
-        );
+    const handleDelete = (id: number) => {
+        setTareaToDelete(id);
+        setIsModalOpen(true);
+    };
 
-        if (!confirmacion) return;
+    const confirmDelete = async () => {
+        if (!tareaToDelete) return;
 
         try {
-            await deleteTarea(id);
+            await deleteTarea(tareaToDelete);
             showNotification("Tarea eliminada correctamente", "success");
             await fetchTareas();
         } catch (error) {
             console.error(error);
             showNotification("No se pudo eliminar la tarea", "error");
+        } finally {
+            setIsModalOpen(false);
+            setTareaToDelete(null);
         }
     };
 
@@ -199,96 +207,112 @@ export default function DashboardPage() {
         : "No se encontraron tareas con los filtros actuales.";
 
     return (
-        <div className="min-h-screen bg-slate-100 py-10 px-4">
-            <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6">
-                <Header />
+        <>
+            <div className="min-h-screen bg-slate-100 dark:bg-slate-900 py-10 px-4 transition-colors duration-300">
+                <div className="max-w-2xl mx-auto space-y-6">
+                    {/* Contenedor para crear nuevas tareas y mostrar notificaciones */}
+                    <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+                        <Header />
 
-                <Notification
-                    notification={notification}
-                    onClose={() => setNotification(null)}
-                />
+                        <Notification
+                            notification={notification}
+                            onClose={() => setNotification(null)}
+                        />
 
-                <TareaForm
-                    onCreated={fetchTareas}
-                    onSuccess={(message) => showNotification(message, "success")}
-                    onError={(message) => showNotification(message, "error")}
-                />
-            </div>
-            <div className="mt-6 max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6 flex flex-col gap-3">
-                <div>
-                    <label htmlFor="buscar-tareas" className="sr-only">
-                        Buscar tareas
-                    </label>
-                    <input
-                        id="buscar-tareas"
-                        type="text"
-                        placeholder="Buscar por título o descripción..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full border border-slate-300 rounded-lg px-4 py-2 outline-none focus:ring-2 focus:ring-blue-400"
+                        <TareaForm
+                            onCreated={fetchTareas}
+                            onSuccess={(message) => showNotification(message, "success")}
+                            onError={(message) => showNotification(message, "error")}
+                        />
+                    </div>
+                </div>
+                {/* Contenedor para búsqueda, filtros y lista de tareas */}
+                <div className="mt-6 max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6 flex flex-col gap-3">
+                    <div>
+                        <label htmlFor="buscar-tareas" className="sr-only">
+                            Buscar tareas
+                        </label>
+                        <input
+                            id="buscar-tareas"
+                            type="text"
+                            placeholder="Buscar por título o descripción..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                            className="w-full border border-slate-300 dark:border-slate-600 
+                                dark:bg-slate-700 dark:text-white 
+                                rounded-lg px-4 py-2 outline-none 
+                                focus:ring-2 focus:ring-blue-400"
+                        />
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                        <button
+                            type="button"
+                            onClick={() => setFilterStatus("todas")}
+                            className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
+                            filterStatus === "todas"
+                                ? "bg-slate-800 text-white dark:bg-slate-600"
+                                : "bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600"
+                            }`}
+                        >
+                            Todas
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setFilterStatus("pendientes")}
+                            className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
+                            filterStatus === "pendientes"
+                                ? "bg-amber-500 text-white"
+                                : "bg-slate-200 text-slate-700 hover:bg-slate-300"
+                            }`}
+                        >
+                            Pendientes
+                        </button>
+
+                        <button
+                            type="button"
+                            onClick={() => setFilterStatus("completadas")}
+                            className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
+                            filterStatus === "completadas"
+                                ? "bg-emerald-600 text-white"
+                                : "bg-slate-200 text-slate-700 hover:bg-slate-300"
+                            }`}
+                        >
+                            Completadas
+                        </button>
+                    </div>
+                    <p className="text-sm text-slate-500">
+                        Mostrando {tareasFiltradas.length} de {tareas.length} tareas
+                    </p>
+                </div>
+                {/* Contenedor para la lista de tareas agrupadas por fecha */}
+                <div className="mt-6 max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
+                    <TaskList
+                        gruposOrdenados={gruposOrdenados}
+                        getFechaLabel={getFechaLabel}
+                        editingId={editingId}
+                        editTitulo={editTitulo}
+                        editDescripcion={editDescripcion}
+                        setEditTitulo={setEditTitulo}
+                        setEditDescripcion={setEditDescripcion}
+                        handleToggle={handleToggle}
+                        handleDelete={handleDelete}
+                        startEdit={startEdit}
+                        cancelEdit={cancelEdit}
+                        handleSaveEdit={handleSaveEdit}
+                        formatFecha={formatFecha}
+                        emptyMessage={emptyMessage}
                     />
                 </div>
-
-                <div className="flex flex-wrap gap-2">
-                    <button
-                        type="button"
-                        onClick={() => setFilterStatus("todas")}
-                        className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
-                        filterStatus === "todas"
-                            ? "bg-slate-800 text-white"
-                            : "bg-slate-200 text-slate-700 hover:bg-slate-300"
-                        }`}
-                    >
-                        Todas
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => setFilterStatus("pendientes")}
-                        className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
-                        filterStatus === "pendientes"
-                            ? "bg-amber-500 text-white"
-                            : "bg-slate-200 text-slate-700 hover:bg-slate-300"
-                        }`}
-                    >
-                        Pendientes
-                    </button>
-
-                    <button
-                        type="button"
-                        onClick={() => setFilterStatus("completadas")}
-                        className={`cursor-pointer px-4 py-2 rounded-lg text-sm font-medium transition ${
-                        filterStatus === "completadas"
-                            ? "bg-emerald-600 text-white"
-                            : "bg-slate-200 text-slate-700 hover:bg-slate-300"
-                        }`}
-                    >
-                        Completadas
-                    </button>
-                </div>
-                <p className="text-sm text-slate-500">
-                    Mostrando {tareasFiltradas.length} de {tareas.length} tareas
-                </p>
             </div>
-            <div className="mt-6 max-w-2xl mx-auto bg-white rounded-2xl shadow-lg p-6">
-                <TaskList
-                    gruposOrdenados={gruposOrdenados}
-                    getFechaLabel={getFechaLabel}
-                    editingId={editingId}
-                    editTitulo={editTitulo}
-                    editDescripcion={editDescripcion}
-                    setEditTitulo={setEditTitulo}
-                    setEditDescripcion={setEditDescripcion}
-                    handleToggle={handleToggle}
-                    handleDelete={handleDelete}
-                    startEdit={startEdit}
-                    cancelEdit={cancelEdit}
-                    handleSaveEdit={handleSaveEdit}
-                    formatFecha={formatFecha}
-                    emptyMessage={emptyMessage}
-                />
-            </div>
-        </div>
+            <ConfirmModal
+                isOpen={isModalOpen}
+                message="¿Seguro deseas eliminar esta tarea?"
+                onConfirm={confirmDelete}
+                onCancel={() => setIsModalOpen(false)}
+            />
+        </>
     );
 }
 
