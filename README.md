@@ -215,6 +215,17 @@ Publicación manual controlada del backend desde VS Code
 
 ---
 
+## 🔑 Demo de la aplicación
+
+Puedes probar la aplicación utilizando la siguiente cuenta demo:
+
+Email: demo@todoapp.com
+Password: Demo123!
+
+⚠️ Nota: Esta es una cuenta compartida, por lo que los datos pueden cambiar o eliminarse.
+
+---
+
 ## 🧠 Desafíos y aprendizajes
 
 - Configuración de CORS entre servicios distribuidos
