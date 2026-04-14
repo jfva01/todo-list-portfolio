@@ -34,7 +34,7 @@ export const TaskItem = ({
   const isEditing = editingId === tarea.id;
 
   return (
-    <li className="flex items-start justify-between gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+    <li data-testid="todo-item" className="flex items-start justify-between gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
       <div className="flex items-start gap-3 flex-1">
         <input
           type="checkbox"
@@ -141,6 +141,7 @@ export const TaskItem = ({
 
             <IconButton
               onClick={() => handleDelete(tarea.id)}
+              data-testid="delete-todo-button"
               title="Eliminar tarea"
               ariaLabel="Eliminar tarea"
               className="cursor-pointer bg-red-500 hover:bg-red-600 text-white"

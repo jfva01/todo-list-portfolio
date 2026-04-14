@@ -79,7 +79,8 @@ export default function LoginPage() {
                     {/* El botón de submit se deshabilita mientras se está procesando el login para evitar múltiples envíos */}
                     <button 
                         type="submit"
-                        disabled={loading} 
+                        disabled={loading}
+                        data-testid="login-button"
                         className="w-full self-end inline-flex items-center justify-center gap-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
                         { loading ? ( <span className="animate-pulse">Ingresando...</span> ) : ( "Entrar" ) }
                     </button>

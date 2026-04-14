@@ -66,6 +66,7 @@ export const TareaForm = ({ onCreated, onSuccess, onError }: TareaFormProps) => 
         type="submit"
         className="self-end inline-flex items-center justify-center gap-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400"
         title="Agregar tarea"
+        data-testid="create-tarea-button"
       >
         <Plus className="w-4 h-4" />
         <span>Agregar</span>

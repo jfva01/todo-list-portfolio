@@ -16,6 +16,7 @@ export const IconButton = ({
   className = "",
   disabled = false,
   children,
+  ...props
 }: IconButtonProps) => {
   return (
     <button
@@ -24,6 +25,7 @@ export const IconButton = ({
       title={title}
       aria-label={ariaLabel}
       disabled={disabled}
+      {...props}
       className={`inline-flex items-center justify-center p-2 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-slate-400 ${className}`}
     >
       {children}
