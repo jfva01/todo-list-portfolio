@@ -27,19 +27,7 @@ Próximamente
 ## 📷 Vista previa
 
 <p align="center">
-  <img src="frontend/src/assets/images/api-endpoints.png" width="600"/>
-  <img src="frontend/src/assets/images/add-form.png" width="600"/>
-  <img src="frontend/src/assets/images/task-editing.png" width="600"/>
-  <img src="frontend/src/assets/images/add-task.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-1.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-2.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-3.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered-1.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered-3.png" width="600"/>
-  <img src="frontend/src/assets/images/completed-tasks.png" width="600"/>
-  <img src="frontend/src/assets/images/popup-notification.png" width="600"/>
-  <img src="frontend/src/assets/images/delete-confirmation.png" width="600"/>
+  
 </p>
 
 ---
