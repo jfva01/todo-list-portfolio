@@ -15,13 +15,6 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ![xUnit](https://img.shields.io/badge/xUnit-Testing-5A2D81?style=for-the-badge)
 ![Moq](https://img.shields.io/badge/Moq-Mocking-7A52C7?style=for-the-badge)
 
-## 🌍 Demo en vivo
-Próximamente
-
-<!-- Cuando hagas deploy puedes reemplazar esto por:
-[![Live Demo](https://img.shields.io/badge/Demo-Online-success?style=for-the-badge)](AQUI_TU_URL)
--->
-
 ---
 
 ## 📷 Vista previa
