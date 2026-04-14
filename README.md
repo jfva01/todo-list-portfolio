@@ -47,7 +47,7 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ---
 
 ## ✨ Funcionalidades
-
+- Autenticación con JWT
 - Crear tareas
 - Listar tareas almacenadas en base de datos
 - Editar título y descripción
@@ -57,9 +57,14 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 - Filtro por estado: todas, pendientes y completadas
 - Agrupación de tareas por fecha de creación
 - Notificaciones tipo toast para éxito y error
+- Protección de rutas
+- Logout automático por inactividad
+- Interfaz moderna con Tailwind CSS
+- Modo oscuro (Dark Mode)
 - Validaciones en backend
 - Arquitectura por capas en API REST
 - Pruebas unitarias de servicios
+- Tests E2E (Playwright)
 
 ---
 
@@ -203,7 +208,7 @@ Puedes probar la aplicación utilizando la siguiente cuenta demo:
 Email: demo@todoapp.com
 Password: Demo123!
 
-⚠️ Nota: Esta es una cuenta compartida, por lo que los datos pueden cambiar o eliminarse.
+⚠️ Nota: La cuenta demo se reinicia periódicamente, por lo que los datos pueden eliminarse automáticamente.
 
 ---
 
