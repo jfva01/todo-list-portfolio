@@ -30,6 +30,7 @@ var connectionString =
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
 builder.Services.AddScoped<ITareaService, TareaService>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddHostedService<DemoCleanupService>();
 
 /*
     LogInformation → flujo normal
