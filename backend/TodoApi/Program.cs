@@ -8,6 +8,7 @@ using Serilog.Sinks.MSSqlServer; //Soporta múltiples destinos (DB, archivo, con
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,6 +104,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Configuramos Swagger para que soporte autenticación JWT y podamos probar los endpoints protegidos desde la interfaz de Swagger UI.
 builder.Services.AddSwaggerGen(options =>
 {
+    var version = builder.Configuration["Api:Version"];
+
+    options.SwaggerDoc(version, new OpenApiInfo
+    {
+        Title = "Todo API",
+        Version = version,
+        Description = "API para gestión de tareas con autenticación JWT."
+    });
+
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -133,7 +143,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI();
+
+app.UseSwaggerUI(options =>
+{
+    var version = builder.Configuration["Api:Version"];
+    options.SwaggerEndpoint($"/swagger/{version}/swagger.json", $"Todo API {version}");
+});
 
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");

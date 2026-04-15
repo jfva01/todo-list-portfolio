@@ -84,8 +84,8 @@ export default function LoginPage() {
                         className="w-full self-end inline-flex items-center justify-center gap-2 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2 rounded-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-400">
                         { loading ? ( <span className="animate-pulse">Ingresando...</span> ) : ( "Entrar" ) }
                     </button>
-                    <p className="text-sm text-gray-600">
-                        "Puedes usar la cuenta demo para probar la aplicación"
+                    <p className="text-sm text-gray-500 text-center mt-4">
+                        "Puedes usar la cuenta demo para probar la aplicación."
                     </p>
                 </form>
             </div>
