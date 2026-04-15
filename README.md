@@ -15,31 +15,12 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ![xUnit](https://img.shields.io/badge/xUnit-Testing-5A2D81?style=for-the-badge)
 ![Moq](https://img.shields.io/badge/Moq-Mocking-7A52C7?style=for-the-badge)
 
-## 🌍 Demo en vivo
-Próximamente
-
-<!-- Cuando hagas deploy puedes reemplazar esto por:
-[![Live Demo](https://img.shields.io/badge/Demo-Online-success?style=for-the-badge)](AQUI_TU_URL)
--->
-
 ---
 
 ## 📷 Vista previa
 
 <p align="center">
-  <img src="frontend/src/assets/images/api-endpoints.png" width="600"/>
-  <img src="frontend/src/assets/images/add-form.png" width="600"/>
-  <img src="frontend/src/assets/images/task-editing.png" width="600"/>
-  <img src="frontend/src/assets/images/add-task.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-1.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-2.png" width="600"/>
-  <img src="frontend/src/assets/images/filters-3.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered-1.png" width="600"/>
-  <img src="frontend/src/assets/images/task-list-ordered-3.png" width="600"/>
-  <img src="frontend/src/assets/images/completed-tasks.png" width="600"/>
-  <img src="frontend/src/assets/images/popup-notification.png" width="600"/>
-  <img src="frontend/src/assets/images/delete-confirmation.png" width="600"/>
+  
 </p>
 
 ---
@@ -66,7 +47,7 @@ Próximamente
 ---
 
 ## ✨ Funcionalidades
-
+- Autenticación con JWT
 - Crear tareas
 - Listar tareas almacenadas en base de datos
 - Editar título y descripción
@@ -76,9 +57,14 @@ Próximamente
 - Filtro por estado: todas, pendientes y completadas
 - Agrupación de tareas por fecha de creación
 - Notificaciones tipo toast para éxito y error
+- Protección de rutas
+- Logout automático por inactividad
+- Interfaz moderna con Tailwind CSS
+- Modo oscuro (Dark Mode)
 - Validaciones en backend
 - Arquitectura por capas en API REST
 - Pruebas unitarias de servicios
+- Tests E2E (Playwright)
 
 ---
 
@@ -212,6 +198,17 @@ Publicación manual controlada del backend desde VS Code
 🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net/api/tareas)
 🔗 Backend (API): [(URL de App Service)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net)
 📄 Swagger: [(URL + /swagger)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net/swagger/index.html)
+
+---
+
+## 🔑 Demo de la aplicación
+
+Puedes probar la aplicación utilizando la siguiente cuenta demo:
+
+Email: demo@todoapp.com
+Password: Demo123!
+
+⚠️ Nota: La cuenta demo se reinicia periódicamente, por lo que los datos pueden eliminarse automáticamente.
 
 ---
 
