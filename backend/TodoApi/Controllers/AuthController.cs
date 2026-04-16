@@ -8,7 +8,7 @@ using TodoApi.Services;
 namespace TodoApi.Controllers
 {
     [ApiController]
-    [Route("api/Auth")]
+    [Route("api/auth")]
     public class AuthController : ControllerBase
     {
         private readonly TodoDbContext _context;

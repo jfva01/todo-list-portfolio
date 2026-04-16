@@ -8,7 +8,7 @@ export const loginRequest = async (
   email: string,
   password: string
 ) => {
-  const data = await apiClient<LoginResponse>("/Auth/login", {
+  const data = await apiClient<LoginResponse>("/auth/login", {
     method: "POST",
     body: JSON.stringify({
       email,
