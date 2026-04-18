@@ -12,10 +12,13 @@ export const createTarea = async (tarea: { titulo: string; descripcion?: string 
   });
 };
 
-export const updateTarea = async (tarea: Tarea) => {
-  return apiClient<void>(`/api/tareas/${tarea.id}`, {
+export const updateTarea = async (
+  id: number,
+  data: Partial<Tarea> // Permite enviar solo los campos que queremos actualizar
+) => {
+  return apiClient<Tarea>(`/api/tareas/${id}`, {
     method: "PUT",
-    body: JSON.stringify(tarea),
+    body: JSON.stringify(data),
   });
 };
 

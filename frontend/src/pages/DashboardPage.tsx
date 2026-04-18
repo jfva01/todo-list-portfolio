@@ -5,39 +5,48 @@ import type { Notification as NotificationType } from "../types/Notification";
 import { TareaForm } from "../components/TareaForm";
 import { Notification } from "../components/Notification";
 import { TaskList } from "../components/TaskList";
-import { updateTarea } from "../api/tareaApi";
-import { deleteTarea } from "../api/tareaApi";
 import { Header } from "../components/Header";
 import { useInactivityTimeout } from "../hooks/useInactivityTimeout";
 import { ConfirmModal } from "../components/ConfirmModal";
+import { TodoListSkeleton } from "../components/TodoListSkeleton";
 
 export default function DashboardPage() {
+    // Hook para manejar el timeout de inactividad y cerrar sesión automáticamente
     useInactivityTimeout();
     // Estados para manejar tareas, notificaciones, edición, búsqueda y filtrado
-    const { tareas, loading, fetchTareas } = useTareas();
+    const { tareas, loading, error, createOptimistic, toggleOptimistic, editOptimistic, deleteOptimistic } = useTareas();
+    // Estado para manejar notificaciones de éxito o error
     const [notification, setNotification] = useState<NotificationType | null>(null);
+    // Estados para manejar la edición de tareas
     const [editingId, setEditingId] = useState<number | null>(null);
+    // Estado para manejar el término de búsqueda en el filtro de tareas
     const [editTitulo, setEditTitulo] = useState("");
+    // Estado para manejar el término de búsqueda en el filtro de tareas
     const [editDescripcion, setEditDescripcion] = useState("");
+    // Estado para manejar el término de búsqueda en el filtro de tareas
     const [searchTerm, setSearchTerm] = useState("");
-    const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas");
+    // Estado para controlar el filtro de tareas (todas, pendientes o completadas)
+    const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas"); 
     // Estado para controlar el modal de confirmación de eliminación
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false); 
+    // Estado para almacenar temporalmente el ID de la tarea que se desea eliminar
     const [tareaToDelete, setTareaToDelete] = useState<number | null>(null);
+    // Estado para resaltar temporalmente una tarea después de crearla o actualizarla
+    const [highlightedId, setHighlightedId] = useState<number | null>(null); 
 
     // Eliminar una tarea
     const handleDelete = (id: number) => {
         setTareaToDelete(id);
         setIsModalOpen(true);
     };
-
+    
+    // Confirmar eliminación de una tarea
     const confirmDelete = async () => {
         if (!tareaToDelete) return;
 
         try {
-            await deleteTarea(tareaToDelete);
+            await deleteOptimistic(tareaToDelete);
             showNotification("Tarea eliminada correctamente", "success");
-            await fetchTareas();
         } catch (error) {
             console.error(error);
             showNotification("No se pudo eliminar la tarea", "error");
@@ -48,19 +57,20 @@ export default function DashboardPage() {
     };
 
     // Alternar el estado de completada de una tarea
-    const handleToggle = async (t: Tarea) => {
+    const handleToggle = async (tarea: Tarea) => {
         try {
-            await updateTarea({
-                // Solo se actualiza el campo de completada, pero se envían los demás campos para evitar problemas de validación en el backend
-                ...t,
-                completada: !t.completada,
-            });
-            await fetchTareas();
-            showNotification("Tarea actualizada correctamente", "success");
+            await toggleOptimistic(tarea);
+
+            showNotification(
+                tarea.completada
+                    ? "Tarea pendiente"
+                    : "Tarea completada",
+                    "success"
+            );
         } catch (error) {
             console.error(error);
             showNotification("No se pudo actualizar la tarea", "error");
-            }
+        }
     };
 
     // Mostrar notificaciones de éxito o error
@@ -84,18 +94,20 @@ export default function DashboardPage() {
     }
 
     // Crear lista filtrada antes de agrupar
-    const tareasFiltradas = tareas.filter((tarea) => {
-        const texto = `${tarea.titulo} ${tarea.descripcion ?? ""}`.toLowerCase();
-        const coincideBusqueda = texto.includes(searchTerm.toLowerCase());
+    const tareasFiltradas = tareas
+        .filter((tarea): tarea is Tarea => tarea != null) // Filtrar tareas nulas o indefinidas
+        .filter((tarea) => {
+            const texto = `${tarea.titulo} ${tarea.descripcion ?? ""}`.toLowerCase();
+            const coincideBusqueda = texto.includes(searchTerm.toLowerCase());
 
-        const coincideEstado =
-        filterStatus === "todas"
-            ? true
-            : filterStatus === "completadas"
-            ? tarea.completada
-            : !tarea.completada;
+            const coincideEstado =
+            filterStatus === "todas"
+                ? true
+                : filterStatus === "completadas"
+                ? tarea.completada
+                : !tarea.completada;
 
-        return coincideBusqueda && coincideEstado;
+            return coincideBusqueda && coincideEstado;
     });
 
     // Ordenar las tareas por fecha de creación (más recientes primero)
@@ -140,21 +152,18 @@ export default function DashboardPage() {
 
     // Guardar cambios de edición
     const handleSaveEdit = async (t: Tarea) => {
-        if (!editTitulo.trim()) {
-            showNotification("El título no puede estar vacío", "error");
-            return;
-        }
-
         try {
-            await updateTarea({
-                ...t,
-                titulo: editTitulo.trim(),
-                descripcion: editDescripcion.trim(),
+            await editOptimistic(t.id, {
+                titulo: editTitulo,
+                descripcion: editDescripcion,
             });
+
+            setHighlightedId(t.id);
+
+            setTimeout(() => setHighlightedId(null), 1500);
 
             showNotification("Tarea actualizada correctamente", "success");
             cancelEdit();
-            await fetchTareas();
         } catch (error) {
             console.error(error);
             showNotification("No se pudo actualizar la tarea", "error");
@@ -206,6 +215,10 @@ export default function DashboardPage() {
         ? "No hay tareas aún. Agrega la primera tarea usando el formulario de arriba."
         : "No se encontraron tareas con los filtros actuales.";
 
+    if (error) {
+        return <p>Error al cargar tareas</p>;
+    }
+
     return (
         <>
             <div className="min-h-screen bg-slate-100 dark:bg-slate-900 py-10 px-4 transition-colors duration-300">
@@ -220,7 +233,7 @@ export default function DashboardPage() {
                         />
 
                         <TareaForm
-                            onCreated={fetchTareas}
+                            onCreated={createOptimistic}
                             onSuccess={(message) => showNotification(message, "success")}
                             onError={(message) => showNotification(message, "error")}
                         />
@@ -288,22 +301,27 @@ export default function DashboardPage() {
                 </div>
                 {/* Contenedor para la lista de tareas agrupadas por fecha */}
                 <div className="mt-6 max-w-2xl mx-auto bg-white dark:bg-slate-800 rounded-2xl shadow-lg p-6">
-                    <TaskList
-                        gruposOrdenados={gruposOrdenados}
-                        getFechaLabel={getFechaLabel}
-                        editingId={editingId}
-                        editTitulo={editTitulo}
-                        editDescripcion={editDescripcion}
-                        setEditTitulo={setEditTitulo}
-                        setEditDescripcion={setEditDescripcion}
-                        handleToggle={handleToggle}
-                        handleDelete={handleDelete}
-                        startEdit={startEdit}
-                        cancelEdit={cancelEdit}
-                        handleSaveEdit={handleSaveEdit}
-                        formatFecha={formatFecha}
-                        emptyMessage={emptyMessage}
-                    />
+                    {loading && !tareas.length ? (
+                        <TodoListSkeleton />
+                    ) : (
+                        <TaskList
+                            gruposOrdenados={gruposOrdenados}
+                            getFechaLabel={getFechaLabel}
+                            editingId={editingId}
+                            editTitulo={editTitulo}
+                            editDescripcion={editDescripcion}
+                            setEditTitulo={setEditTitulo}
+                            setEditDescripcion={setEditDescripcion}
+                            handleToggle={handleToggle}
+                            handleDelete={handleDelete}
+                            startEdit={startEdit}
+                            cancelEdit={cancelEdit}
+                            handleSaveEdit={handleSaveEdit}
+                            formatFecha={formatFecha}
+                            emptyMessage={emptyMessage}
+                            highlightedId={highlightedId}
+                        />
+                    )}
                 </div>
             </div>
             <ConfirmModal

@@ -1,6 +1,7 @@
 import { Pencil, Save, Trash2, X } from "lucide-react";
 import { IconButton } from "./IconButton";
 import type { Tarea } from "../types/Tarea";
+import { useEffect, useState } from "react";
 
 type TaskItemProps = {
   tarea: Tarea;
@@ -15,6 +16,7 @@ type TaskItemProps = {
   cancelEdit: () => void;
   handleSaveEdit: (tarea: Tarea) => void;
   formatFecha: (fecha: string) => string;
+  highlightedId: number | null;
 };
 
 export const TaskItem = ({
@@ -30,17 +32,42 @@ export const TaskItem = ({
   cancelEdit,
   handleSaveEdit,
   formatFecha,
+  highlightedId
 }: TaskItemProps) => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true);
+  }, []);
+
   const isEditing = editingId === tarea.id;
 
   return (
-    <li data-testid="todo-item" className="flex items-start justify-between gap-4 bg-slate-50 border border-slate-200 rounded-xl p-4">
+    <li data-testid="todo-item"
+        className={`
+          flex items-start justify-between gap-4
+          border rounded-xl p-4
+          transition-all duration-300 ease-out transform
+          bg-slate-50 border-slate-200
+
+          ${visible
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-2"}
+
+          ${tarea.optimistic ? "opacity-60 pointer-events-none" : ""}
+
+          ${highlightedId === tarea.id && "animate-pulse"
+            ? "ring-2 ring-blue-400 bg-blue-50 scale-[1.01]"
+            : ""
+          }
+        `}
+    >
       <div className="flex items-start gap-3 flex-1">
         <input
           type="checkbox"
           checked={tarea.completada}
           onChange={() => handleToggle(tarea)}
-          className="h-5 w-5 cursor-pointer mt-1"
+          className="h-5 w-5 cursor-pointer mt-1 transition-transform duration-150 active:scale-90"
           disabled={isEditing}
           aria-label={`Marcar tarea ${tarea.titulo} como ${
             tarea.completada ? "pendiente" : "completada"
@@ -84,11 +111,12 @@ export const TaskItem = ({
           ) : (
             <div>
               <p
-                className={`text-base font-medium ${
-                  tarea.completada
-                    ? "line-through text-slate-400"
-                    : "text-slate-700"
-                }`}
+                className={`
+                  text-base font-medium transition-all duration-300
+                  ${tarea.completada
+                    ? "line-through text-slate-400 scale-[0.98]"
+                    : "text-slate-700 scale-100"}
+                `}
               >
                 {tarea.titulo}
               </p>
@@ -114,7 +142,7 @@ export const TaskItem = ({
               onClick={() => handleSaveEdit(tarea)}
               title="Guardar cambios"
               ariaLabel="Guardar cambios"
-              className="cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white"
+              className="cursor-pointer bg-emerald-500 hover:bg-emerald-600 text-white transition-all duration-200 active:scale-95 hover:scale-[1.02]"
             >
               <Save className="w-4 h-4" />
             </IconButton>
@@ -123,7 +151,7 @@ export const TaskItem = ({
               onClick={cancelEdit}
               title="Cancelar edición"
               ariaLabel="Cancelar edición"
-              className="cursor-pointer bg-slate-400 hover:bg-slate-500 text-white"
+              className="cursor-pointer bg-slate-400 hover:bg-slate-500 text-white transition-all duration-200 active:scale-95 hover:scale-[1.02]"
             >
               <X className="w-4 h-4" />
             </IconButton>
@@ -153,4 +181,5 @@ export const TaskItem = ({
       </div>
     </li>
   );
+  console.log("highlightedId en TaskItem:", highlightedId);
 };

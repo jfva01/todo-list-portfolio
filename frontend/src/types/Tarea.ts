@@ -4,4 +4,5 @@ export interface Tarea {
   descripcion?: string;
   completada: boolean;
   fechaCreacion: string;
+  optimistic?: boolean; // Solo para tareas temporales
 }

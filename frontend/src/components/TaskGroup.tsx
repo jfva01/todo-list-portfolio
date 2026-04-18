@@ -15,6 +15,7 @@ type TaskGroupProps = {
   cancelEdit: () => void;
   handleSaveEdit: (tarea: Tarea) => void;
   formatFecha: (fecha: string) => string;
+  highlightedId: number | null;
 };
 
 export const TaskGroup = ({
@@ -31,6 +32,7 @@ export const TaskGroup = ({
   cancelEdit,
   handleSaveEdit,
   formatFecha,
+  highlightedId
 }: TaskGroupProps) => {
   return (
     <section>
@@ -54,6 +56,7 @@ export const TaskGroup = ({
             cancelEdit={cancelEdit}
             handleSaveEdit={handleSaveEdit}
             formatFecha={formatFecha}
+            highlightedId={highlightedId}
           />
         ))}
       </ul>

@@ -129,10 +129,19 @@ public class TareasController : ControllerBase
             return Forbid();
         }
 
-        // Mapear DTO → entidad
-        tareaExistente.Titulo = dto.Titulo;
-        tareaExistente.Descripcion = dto.Descripcion;
-        tareaExistente.Completada = dto.Completada;
+        // Mapear DTO → entidad (solo actualizar campos proporcionados)
+        if (dto.Titulo != null)
+        {
+            tareaExistente.Titulo = dto.Titulo;
+        }
+        if (dto.Descripcion != null)
+        {
+            tareaExistente.Descripcion = dto.Descripcion;
+        }
+        if (dto.Completada.HasValue)
+        {
+            tareaExistente.Completada = dto.Completada.Value;
+        }
 
         await _service.UpdateTareaAsync(tareaExistente);
 

@@ -18,6 +18,7 @@ type TaskListProps = {
   handleSaveEdit: (tarea: Tarea) => void;
   formatFecha: (fecha: string) => string;
   emptyMessage?: string;
+  highlightedId: number | null;
 };
 
 export const TaskList = ({
@@ -35,6 +36,7 @@ export const TaskList = ({
   handleSaveEdit,
   formatFecha,
   emptyMessage = "No hay tareas aún. Agrega la primera tarea usando el formulario de arriba.",
+  highlightedId
 }: TaskListProps) => {
   if (gruposOrdenados.length === 0) {
     return (
@@ -62,6 +64,7 @@ export const TaskList = ({
           cancelEdit={cancelEdit}
           handleSaveEdit={handleSaveEdit}
           formatFecha={formatFecha}
+          highlightedId={highlightedId}
         />
       ))}
     </div>

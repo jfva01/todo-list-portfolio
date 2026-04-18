@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { createTarea } from "../api/tareaApi";
 import { Plus } from "lucide-react";
+import type { Tarea } from "../types/Tarea";
 
 type TareaFormProps = {
-  onCreated: () => Promise<void>;
+  onCreated: (data: { titulo: string; descripcion?: string; }) => Promise<Tarea>;
   onSuccess: (message: string) => void;
   onError: (message: string) => void;
 };
@@ -18,11 +18,12 @@ export const TareaForm = ({ onCreated, onSuccess, onError }: TareaFormProps) => 
     if (!titulo.trim()) return;
 
     try {
-      await createTarea({ titulo, descripcion});
+      await onCreated({ titulo, descripcion });
+
       setTitulo("");
       setDescripcion("");
+
       onSuccess("Tarea creada correctamente");
-      await onCreated(); // refresca lista
     } catch (error) {
       console.error(error);
       onError("No se pudo crear la tarea");
