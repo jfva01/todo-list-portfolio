@@ -115,10 +115,10 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ✔ Bajo acoplamiento entre capas
 
 **Frontend (Arquitectura por capas + hooks)**
-**api/** → Cliente HTTP centralizado (apiClient)
-**hooks/** → Lógica reutilizable (useTareas, estado y side effects)
-**components/** → Componentes UI desacoplados
-**types/** → Tipado fuerte con TypeScript
+- **api/** → Cliente HTTP centralizado (apiClient)
+- **hooks/** → Lógica reutilizable (useTareas, estado y side effects)
+- **components/** → Componentes UI desacoplados
+- **types/** → Tipado fuerte con TypeScript
 
 ✔ Separación de lógica y presentación
 ✔ Reutilización mediante custom hooks
