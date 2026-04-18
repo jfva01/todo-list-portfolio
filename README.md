@@ -19,19 +19,28 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 
 ## 📷 Vista previa
 
-<p align="center">
-  <img src="src/assets/images/Login.png" width="800"/>
-  <img src="src/assets/images/Header-CreateForm.png" width="800"/>
-  <img src="src/assets/images/Filters.png" width="800"/>
-  <img src="src/assets/images/TaskList.png" width="800"/>
-  <img src="src/assets/images/TaskEdition.png" width="800"/>
-  <img src="src/assets/images/InfoToast.png" width="800"/>
-  <img src="src/assets/images/TaskFilteredPending.png" width="800"/>
-  <img src="src/assets/images/TaskFilteredCompleted.png" width="800"/>
-  <img src="src/assets/images/DeleteConfirm.png" width="800"/>
-  <img src="src/assets/images/DarkMode.png" width="800"/>
-  <img src="src/assets/images/API-Endpoints.png" width="800"/>
-</p>
+### Login
+<img src="assets/images/Login.png" width="800"/>
+
+### Header / Create Task Form
+<img src="assets/images/Header-CreateForm.png" width="800"/>
+
+### Task List
+<img src="assets/images/TaskList.png" width="800"/>
+<img src="assets/images/TaskEdition.png" width="800"/>
+<img src="assets/images/InfoToast.png" width="800"/>
+<img src="assets/images/DeleteConfirm.png" width="800"/>
+
+### Filters
+<img src="assets/images/Filters.png" width="800"/>
+<img src="assets/images/TaskFilteredPending.png" width="800"/>
+<img src="assets/images/TaskFilteredCompleted.png" width="800"/>
+
+### Dark Mode
+<img src="assets/images/DarkMode.png" width="800"/>
+
+### API Endpoints
+<img src="assets/images/API-Endpoints.png" width="800"/>
 
 ---
 
