@@ -20,7 +20,17 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ## 📷 Vista previa
 
 <p align="center">
-  
+  <img src="src/assets/images/Login.png" width="800"/>
+  <img src="src/assets/images/Header-CreateForm.png" width="800"/>
+  <img src="src/assets/images/Filters.png" width="800"/>
+  <img src="src/assets/images/TaskList.png" width="800"/>
+  <img src="src/assets/images/TaskEdition.png" width="800"/>
+  <img src="src/assets/images/InfoToast.png" width="800"/>
+  <img src="src/assets/images/TaskFilteredPending.png" width="800"/>
+  <img src="src/assets/images/TaskFilteredCompleted.png" width="800"/>
+  <img src="src/assets/images/DeleteConfirm.png" width="800"/>
+  <img src="src/assets/images/DarkMode.png" width="800"/>
+  <img src="src/assets/images/API-Endpoints.png" width="800"/>
 </p>
 
 ---
@@ -68,17 +78,41 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 
 ---
 
+## ⚡ Experiencia de Usuario (UX avanzada)
+- Skeleton loaders durante la carga de datos (mejora de perceived performance)
+- Actualizaciones optimistas (Optimistic UI) en todas las operaciones:
+  - Creación instantánea de tareas
+  - Edición inline con sincronización automática
+  - Eliminación inmediata con rollback en caso de error
+  - Toggle de estado (completado) sin latencia visible
+- Manejo de rollback ante fallos de API
+- Feedback visual de estado optimista (opacidad + bloqueo de interacción)
+- Highlight automático al editar tareas (efecto tipo Notion)
+- Transiciones suaves y microinteracciones para mejorar la experiencia
+
+---
+
 ## 🧱 Arquitectura del proyecto
+**Backend (Clean Architecture simplificada)**
+- **Controllers** → Exponen endpoints HTTP
+- **Services** → Lógica de negocio y reglas
+ - **Repositories** → Acceso a datos desacoplado
+- **Data** → DbContext (Entity Framework Core)
+- **Models** → Entidades del dominio
 
-El backend fue estructurado siguiendo una separación por responsabilidades:
+✔ Separación clara de responsabilidades
+✔ Testabilidad mediante mocking (Moq)
+✔ Bajo acoplamiento entre capas
 
-- **Controllers**: exponen los endpoints HTTP
-- **Services**: contienen la lógica de negocio
-- **Repositories**: encapsulan acceso a datos
-- **Data**: contexto de Entity Framework Core
-- **Models**: entidades del dominio
+**Frontend (Arquitectura por capas + hooks)**
+**api/** → Cliente HTTP centralizado (apiClient)
+**hooks/** → Lógica reutilizable (useTareas, estado y side effects)
+**components/** → Componentes UI desacoplados
+**types/** → Tipado fuerte con TypeScript
 
-El frontend fue desarrollado con una estructura basada en componentes reutilizables y manejo de estado con React Hooks.
+✔ Separación de lógica y presentación
+✔ Reutilización mediante custom hooks
+✔ Manejo manual de estado + side effects
 
 ---
 
@@ -93,15 +127,17 @@ El frontend fue desarrollado con una estructura basada en componentes reutilizab
     /Repositories
     /Services
     Program.cs
-  /ToDoApi.Tests
+
+  /TodoApi.Tests
     /Services
 
 /frontend
   /src
-    /api
-    /components
-    /hooks
-    /types
+    /api          # cliente HTTP (apiClient, endpoints)
+    /components   # UI reutilizable (TaskItem, TaskList, etc.)
+    /hooks        # lógica de negocio (useTareas)
+    /types        # interfaces y modelos TS
+    /utils        # helpers (opcional futuro)
     App.tsx
     main.tsx
 ```
@@ -117,6 +153,17 @@ El frontend fue desarrollado con una estructura basada en componentes reutilizab
 
 ---
 
+## ⚙️ Decisiones técnicas
+- Implementación de Optimistic UI sin librerías externas (manejo manual de estado y rollback)
+- Separación de responsabilidades en frontend mediante custom hooks
+- Manejo de errores y estados inconsistentes (prevención de null en render)
+- Uso de Skeleton loaders en lugar de spinners para mejorar UX
+- Estrategia de sincronización entre frontend y backend sin refetch innecesario
+- Uso de storageState en Playwright para optimizar tests E2E
+- Arquitectura desacoplada que permite migración futura a herramientas como React Query
+
+---
+
 ## 🧪 Testing
 
 Se implementaron pruebas unitarias para la capa de servicios, validando escenarios como:
@@ -127,6 +174,10 @@ Se implementaron pruebas unitarias para la capa de servicios, validando escenari
 - Eliminación de tareas
 - Manejo de excepciones del repositorio
 - Validaciones de reglas de negocio
+- Tests E2E con Playwright (multi-browser: Chromium, Firefox, WebKit)
+- Flujos completos: login, CRUD de tareas
+- Uso de storageState para evitar login repetido
+- Selectores accesibles (getByRole, data-testid)
 
 Esto permite asegurar el comportamiento esperado de la lógica antes de llegar al controlador o a la base de datos.
 
@@ -144,13 +195,12 @@ Esto permite asegurar el comportamiento esperado de la lógica antes de llegar a
 
 ## 📌 Mejoras futuras
 
-- Autenticación de usuarios
-- Persistencia de filtros por sesión
-- Confirmación con modal custom en lugar de window.confirm
-- Tests de integración para endpoints
-- Deploy completo frontend + backend + base de datos en la nube
-- Modo oscuro
-- Paginación o virtualización para grandes volúmenes de tareas
+- Migración a React Query para manejo de estado server-side
+- Undo delete con acción en toast
+- Virtualización de listas (react-window / react-virtual)
+- Tests de integración backend
+- Refresh tokens para autenticación
+- WebSockets para actualización en tiempo real
 
 ---
 
@@ -195,7 +245,7 @@ Publicación manual controlada del backend desde VS Code
 ---
 
 ## 🌍 URLs del proyecto
-🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net/api/tareas)
+🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net)
 🔗 Backend (API): [(URL de App Service)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net)
 📄 Swagger: [(URL + /swagger)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net/swagger/index.html)
 
