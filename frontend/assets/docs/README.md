@@ -4,11 +4,11 @@ Esta sección describe en detalle el diseño, decisiones técnicas y funcionamie
 
 ## Contenido
 
-- Overview del proyecto
-- Arquitectura backend
-- Arquitectura frontend
-- Flujo de datos
-- Optimistic UI y UX avanzada
-- Testing
-- Deploy en Azure
-- Lecciones aprendidas
+- 1. Overview del proyecto
+- 2. Arquitectura backend
+- 3. Arquitectura frontend
+- 4. Flujo de datos
+- 5. Optimistic UI y UX avanzada
+- 6. Testing
+- 7. Deploy en Azure
+- 8. Lecciones aprendidas

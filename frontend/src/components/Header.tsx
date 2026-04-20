@@ -39,6 +39,12 @@ export function Header() {
                     <p className="text-sm text-slate-400">versión: {version}</p>
                 </span>
             </div>
+            <div className="flex justify-center items-center mb-6">
+                <label className="font-bold text-slate-500 dark:text-slate-400">Usuario: </label>
+                <span className="pl-1 text-sm text-slate-500 dark:text-slate-400">
+                    {user?.email || user?.name || "Usuario"}
+                </span>
+            </div>
             <div className="flex justify-between items-center mb-6">
                 <div className="inline-flex justify-center items-center gap-2">
                     <span className="font-bold text-sm text-slate-500">
@@ -54,12 +60,6 @@ export function Header() {
                             ${isDark ? "translate-x-6" : "translate-x-1"}`}
                         />
                     </button>
-                </div>
-                <div>
-                    <label className="font-bold text-slate-500 dark:text-slate-400">Usuario: </label>
-                    <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {user?.email || user?.name || "Usuario"}
-                    </span>
                 </div>
                 <button
                     onClick={handleLogout}
