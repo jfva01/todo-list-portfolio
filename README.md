@@ -20,27 +20,27 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ## 📷 Vista previa
 
 ### Login
-<img src="frontend/assets/images/Login.png" width="800"/>
+<img src="frontend/assets/images/Login.png" width="500"/>
 
 ### Header / Create Task Form
-<img src="frontend/assets/images/Header-CreateForm.png" width="800"/>
+<img src="frontend/assets/images/Header-CreateForm.png" width="500"/>
 
 ### Task List
-<img src="frontend/assets/images/TaskList.png" width="600"/>
-<img src="frontend/assets/images/TaskEdition.png" width="600"/>
-<img src="frontend/assets/images/InfoToast.png" width="600"/>
-<img src="frontend/assets/images/DeleteConfirm.png" width="600"/>
+<img src="frontend/assets/images/TaskList.png" width="500"/>
+<img src="frontend/assets/images/TaskEdition.png" width="500"/>
+<img src="frontend/assets/images/InfoToast.png" width="500"/>
+<img src="frontend/assets/images/DeleteConfirm.png" width="500"/>
 
 ### Filters
-<img src="frontend/assets/images/Filters.png" width="600"/>
-<img src="frontend/assets/images/TaskFilteredPending.png" width="600"/>
-<img src="frontend/assets/images/TaskFilteredCompleted.png" width="600"/>
+<img src="frontend/assets/images/Filters.png" width="500"/>
+<img src="frontend/assets/images/TaskFilteredPending.png" width="500"/>
+<img src="frontend/assets/images/TaskFilteredCompleted.png" width="500"/>
 
 ### Dark Mode
-<img src="frontend/assets/images/DarkMode.png" width="600"/>
+<img src="frontend/assets/images/DarkMode.png" width="500"/>
 
 ### API Endpoints
-<img src="frontend/assets/images/API-Endpoints.png" width="600"/>
+<img src="frontend/assets/images/API-Endpoints.png" width="500"/>
 
 ---
 
