@@ -20,27 +20,27 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ## 📷 Vista previa
 
 ### Login
-<img src="assets/images/Login.png" width="800"/>
+<img src="frontend/assets/images/Login.png" width="800"/>
 
 ### Header / Create Task Form
-<img src="assets/images/Header-CreateForm.png" width="800"/>
+<img src="frontend/assets/images/Header-CreateForm.png" width="800"/>
 
 ### Task List
-<img src="assets/images/TaskList.png" width="800"/>
-<img src="assets/images/TaskEdition.png" width="800"/>
-<img src="assets/images/InfoToast.png" width="800"/>
-<img src="assets/images/DeleteConfirm.png" width="800"/>
+<img src="frontend/assets/images/TaskList.png" width="800"/>
+<img src="frontend/assets/images/TaskEdition.png" width="800"/>
+<img src="frontend/assets/images/InfoToast.png" width="800"/>
+<img src="frontend/assets/images/DeleteConfirm.png" width="800"/>
 
 ### Filters
-<img src="assets/images/Filters.png" width="800"/>
-<img src="assets/images/TaskFilteredPending.png" width="800"/>
-<img src="assets/images/TaskFilteredCompleted.png" width="800"/>
+<img src="frontend/assets/images/Filters.png" width="800"/>
+<img src="frontend/assets/images/TaskFilteredPending.png" width="800"/>
+<img src="frontend/assets/images/TaskFilteredCompleted.png" width="800"/>
 
 ### Dark Mode
-<img src="assets/images/DarkMode.png" width="800"/>
+<img src="frontend/assets/images/DarkMode.png" width="800"/>
 
 ### API Endpoints
-<img src="assets/images/API-Endpoints.png" width="800"/>
+<img src="frontend/assets/images/API-Endpoints.png" width="800"/>
 
 ---
 
@@ -62,6 +62,7 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ### Testing
 - xUnit
 - Moq
+- E2E Playwright
 
 ---
 
@@ -114,10 +115,10 @@ Permite crear, listar, editar, eliminar, buscar, filtrar y marcar tareas como co
 ✔ Bajo acoplamiento entre capas
 
 **Frontend (Arquitectura por capas + hooks)**
-**api/** → Cliente HTTP centralizado (apiClient)
-**hooks/** → Lógica reutilizable (useTareas, estado y side effects)
-**components/** → Componentes UI desacoplados
-**types/** → Tipado fuerte con TypeScript
+- **api/** → Cliente HTTP centralizado (apiClient)
+- **hooks/** → Lógica reutilizable (useTareas, estado y side effects)
+- **components/** → Componentes UI desacoplados
+- **types/** → Tipado fuerte con TypeScript
 
 ✔ Separación de lógica y presentación
 ✔ Reutilización mediante custom hooks
