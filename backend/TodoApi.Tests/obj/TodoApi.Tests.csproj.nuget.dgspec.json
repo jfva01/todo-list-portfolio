@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\ToDoApi.Tests\\TodoApi.Tests.csproj": {}
+    "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi.Tests\\TodoApi.Tests.csproj": {}
   },
   "projects": {
-    "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\ToDoApi.Tests\\TodoApi.Tests.csproj": {
+    "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi.Tests\\TodoApi.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\ToDoApi.Tests\\TodoApi.Tests.csproj",
+        "projectUniqueName": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi.Tests\\TodoApi.Tests.csproj",
         "projectName": "TodoApi.Tests",
-        "projectPath": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\ToDoApi.Tests\\TodoApi.Tests.csproj",
+        "projectPath": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi.Tests\\TodoApi.Tests.csproj",
         "packagesPath": "C:\\Users\\Jorge Vargas\\.nuget\\packages\\",
-        "outputPath": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\ToDoApi.Tests\\obj\\",
+        "outputPath": "F:\\Documents\\Jorge\\todo-list-portfolio\\backend\\TodoApi.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Jorge Vargas\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -84,7 +84,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.419/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.420/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -127,6 +127,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.1.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.25, )"
@@ -181,7 +189,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.419/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.420/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

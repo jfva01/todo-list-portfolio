@@ -187,3 +187,4 @@ F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\re
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\TodoApi.Tests.pdb
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\TodoApi.Tests.genruntimeconfig.cache
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\ref\TodoApi.Tests.dll
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\TodoApi.Tests.sourcelink.json
