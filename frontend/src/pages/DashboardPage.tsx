@@ -1,60 +1,112 @@
 import { useTareas } from "../hooks/useTareas";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Tarea } from "../types/Tarea";
 import type { Notification as NotificationType } from "../types/Notification";
-import { TareaForm } from "../components/TareaForm";
 import { Notification } from "../components/Notification";
+import { TareaForm } from "../components/TareaForm";
 import { TaskList } from "../components/TaskList";
 import { Header } from "../components/Header";
 import { useInactivityTimeout } from "../hooks/useInactivityTimeout";
-import { ConfirmModal } from "../components/ConfirmModal";
 import { TodoListSkeleton } from "../components/TodoListSkeleton";
 
 export default function DashboardPage() {
     // Hook para manejar el timeout de inactividad y cerrar sesión automáticamente
     useInactivityTimeout();
-    // Estados para manejar tareas, notificaciones, edición, búsqueda y filtrado
-    const { tareas, loading, error, createOptimistic, toggleOptimistic, editOptimistic, deleteOptimistic } = useTareas();
-    // Estado para manejar notificaciones de éxito o error
-    const [notification, setNotification] = useState<NotificationType | null>(null);
-    // Estados para manejar la edición de tareas
-    const [editingId, setEditingId] = useState<number | null>(null);
-    // Estado para manejar el término de búsqueda en el filtro de tareas
-    const [editTitulo, setEditTitulo] = useState("");
-    // Estado para manejar el término de búsqueda en el filtro de tareas
-    const [editDescripcion, setEditDescripcion] = useState("");
-    // Estado para manejar el término de búsqueda en el filtro de tareas
-    const [searchTerm, setSearchTerm] = useState("");
-    // Estado para controlar el filtro de tareas (todas, pendientes o completadas)
-    const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas"); 
-    // Estado para controlar el modal de confirmación de eliminación
-    const [isModalOpen, setIsModalOpen] = useState(false); 
-    // Estado para almacenar temporalmente el ID de la tarea que se desea eliminar
-    const [tareaToDelete, setTareaToDelete] = useState<number | null>(null);
-    // Estado para resaltar temporalmente una tarea después de crearla o actualizarla
-    const [highlightedId, setHighlightedId] = useState<number | null>(null); 
+    const { tareas, loading, error, createOptimistic, toggleOptimistic, editOptimistic, // Estados para manejar tareas, notificaciones, edición, búsqueda y filtrado
+        deleteOptimistic, restoreOptimistic, removeFromUI } = useTareas();
+    const [notification, setNotification] = useState<NotificationType | null>(null);    // Estado para manejar notificaciones de éxito o error
+    const [editingId, setEditingId] = useState<number | null>(null);                    // Estados para manejar la edición de tareas
+    const [editTitulo, setEditTitulo] = useState("");                                   // Estado para controlar el título en el formulario de edición de tareas
+    const [editDescripcion, setEditDescripcion] = useState("");                         // Estado para controlar el filtro de tareas (todas, pendientes o completadas)
+    const [searchTerm, setSearchTerm] = useState("");                                   // Estado para manejar el término de búsqueda en el filtro de tareas
+    const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas");    // Estado para controlar el filtro de tareas (todas, pendientes o completadas)
+    const [highlightedId, setHighlightedId] = useState<number | null>(null);            // Estado para resaltar temporalmente una tarea después de crearla o actualizarla
 
-    // Eliminar una tarea
-    const handleDelete = (id: number) => {
-        setTareaToDelete(id);
-        setIsModalOpen(true);
-    };
-    
-    // Confirmar eliminación de una tarea
-    const confirmDelete = async () => {
-        if (!tareaToDelete) return;
+    // Estado para almacenar temporalmente la tarea que se desea eliminar junto con su índice en la lista, para permitir deshacer la eliminación
+    const [pendingDelete, setPendingDelete] = useState<{
+        item: Tarea;
+        index: number;
+    } | null>(null);
 
-        try {
-            await deleteOptimistic(tareaToDelete);
-            showNotification("Tarea eliminada correctamente", "success");
-        } catch (error) {
-            console.error(error);
-            showNotification("No se pudo eliminar la tarea", "error");
-        } finally {
-            setIsModalOpen(false);
-            setTareaToDelete(null);
+    // Función para cerrar la notificación actual
+    const closeNotification = () => {
+        if (notificationTimerRef.current) {
+            // Limpiar el timer de la notificación para evitar que intente cerrar una 
+            // notificación que ya ha sido cerrada o reemplazada por otra
+            clearTimeout(notificationTimerRef.current);
         }
+        setNotification(null);
     };
+
+    const deleteTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const notificationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Función para manejar la eliminación de una tarea, que llama a deleteWithUndo para eliminar con opción de deshacer
+    const handleDelete = (id: number) => {
+        deleteWithUndo(id);
+    };
+
+    // Función para eliminar una tarea con opción de deshacer, que muestra una notificación 
+    // con la opción de deshacer después de eliminar la tarea de la UI
+    const handleUndoWithData = (item: Tarea, index: number) => {
+        // Limpiar el timeout de eliminación definitiva si el usuario decide deshacer la eliminación
+        if (deleteTimeoutRef.current) {
+            clearTimeout(deleteTimeoutRef.current);
+        }
+        restoreOptimistic(item, index);
+        setPendingDelete(null);
+
+        closeNotification();
+    };
+
+    // Función para eliminar una tarea con opción de deshacer
+    const deleteWithUndo = async (id: number) => {
+        // 1. Encontrar el índice de la tarea a eliminar para poder restaurarla en caso de deshacer
+        const index = tareas.findIndex(t => t.id === id);
+        if (index === -1) return;
+        // Guardar la tarea a eliminar y su índice en el estado de pendingDelete para permitir deshacer la eliminación
+        const itemToDelete = tareas[index];
+
+        if (!itemToDelete || index === -1) return;
+
+        // 2. Guardar la tarea a eliminar y su índice en el estado de pendingDelete para permitir deshacer la eliminación
+        setPendingDelete({
+            item: itemToDelete,
+            index: index
+        });
+        // 3. Eliminar la tarea de la UI inmediatamente utilizando removeFromUI, 
+        // que elimina la tarea sin llamar a la API (ya que la eliminación real se hará después del timeout)
+        removeFromUI(id);
+        // 4. Mostrar una notificación con la opción de deshacer
+        showNotification({
+            message: "Tarea eliminada",
+            type: "info",
+            actionLabel: "Deshacer",
+            onAction: () => {
+                handleUndoWithData(itemToDelete, index); 
+                closeNotification();
+            }
+        });
+    };
+    // El efecto para manejar el timeout de la opción de deshacer después de eliminar una tarea
+    useEffect(() => {
+        if (!pendingDelete) return;
+        // Iniciar un timer de 3 segundos para eliminar definitivamente la tarea después de mostrar la notificación de eliminación
+        deleteTimeoutRef.current = setTimeout(async () => {
+            try {
+                await deleteOptimistic(pendingDelete.item.id);
+                setPendingDelete(null);
+            } catch (error) {
+                console.error(error);
+            }
+        }, 3000);
+        // Limpiar el timer si el componente se desmonta o si se cancela la eliminación (por ejemplo, al hacer clic en "Deshacer")
+        return () => {
+            if (deleteTimeoutRef.current) {
+                clearTimeout(deleteTimeoutRef.current);
+            }
+        };
+    }, [pendingDelete]);
 
     // Alternar el estado de completada de una tarea
     const handleToggle = async (tarea: Tarea) => {
@@ -75,12 +127,25 @@ export default function DashboardPage() {
 
     // Mostrar notificaciones de éxito o error
     const showNotification = (
-        message: string, 
-        type: NotificationType["type"]
+        messageOrConfig: string | Notification,
+        type?: Notification["type"]
     ) => {
-        setNotification({ message, type });
-        setTimeout(() => {
-        setNotification(null);
+        const notification =
+            typeof messageOrConfig === "string"
+            ? { message: messageOrConfig, type: type || "info" }
+            : messageOrConfig;
+
+        setNotification(notification);
+
+        // Limpiar cualquier timer de notificación existente para evitar que se acumulen 
+        // múltiples timers si se muestran varias notificaciones en poco tiempo
+        if (notificationTimerRef.current) {
+            clearTimeout(notificationTimerRef.current);
+        }
+
+        // Iniciar un nuevo timer para cerrar la notificación después de 3 segundos
+        notificationTimerRef.current = setTimeout(() => {
+            setNotification(null);
         }, 3000);
     };
 
@@ -324,12 +389,12 @@ export default function DashboardPage() {
                     )}
                 </div>
             </div>
-            <ConfirmModal
+            {/* <ConfirmModal
                 isOpen={isModalOpen}
                 message="¿Seguro deseas eliminar esta tarea?"
                 onConfirm={confirmDelete}
                 onCancel={() => setIsModalOpen(false)}
-            />
+            /> */}
         </>
     );
 }

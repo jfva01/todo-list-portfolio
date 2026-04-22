@@ -149,6 +149,20 @@ export const useTareas = () => { // Custom hook para manejar la lógica de tarea
     }
   };
 
+  const restoreOptimistic = (item: Tarea, index: number) => {
+    // Insertar el item en la posición original
+    setTareas(prev => { 
+        const newTareas = [...prev];
+        newTareas.splice(index, 0, item);
+        return newTareas;
+    });
+  };
+
+  const removeFromUI = (id: number) => {
+    // Eliminar el item de la UI sin llamar a la API (usado para eliminar la tarea "temporal" en caso de error)
+      setTareas(prev => prev.filter(t => t.id !== id));
+  };
+
   return { 
     tareas,
     loading,
@@ -158,5 +172,7 @@ export const useTareas = () => { // Custom hook para manejar la lógica de tarea
     toggleOptimistic,
     editOptimistic,
     deleteOptimistic,
+    restoreOptimistic,
+    removeFromUI,
    };
 };

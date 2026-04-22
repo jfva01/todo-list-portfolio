@@ -1,5 +1,6 @@
 import { CheckCircle, CircleX, X } from "lucide-react";
 import type { Notification as NotificationType } from "../types/Notification";
+import { useRef } from "react";
 
 type NotificationProps = {
   notification: NotificationType | null;
@@ -11,6 +12,10 @@ export const Notification = ({
   onClose,
  }: NotificationProps) => {
   if (!notification) return null;
+  
+  // Se Usa un ref para almacenar el timer de la notificación, lo que nos permite limpiarlo 
+  // si el componente se desmonta o si se muestra una nueva notificación antes de que expire la anterior
+  const notificationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Muestra una alerta verde si es éxito, o roja si es error
   const isSuccess = notification.type === "success";
@@ -33,6 +38,15 @@ export const Notification = ({
 
         <div className="flex-1 pr-2">
           <p>{notification.message}</p>
+
+          {notification.onAction && notification.actionLabel && (
+            <button
+              onClick={notification.onAction}
+              className="cursor-pointer text-sm font-semibold underline hover:opacity-80 transition"
+            >
+              {notification.actionLabel}
+            </button>
+          )}
         </div>
 
         {onClose && (
