@@ -1,6 +1,5 @@
 import { CheckCircle, CircleX, X } from "lucide-react";
 import type { Notification as NotificationType } from "../types/Notification";
-import { useRef } from "react";
 
 type NotificationProps = {
   notification: NotificationType | null;
@@ -12,16 +11,12 @@ export const Notification = ({
   onClose,
  }: NotificationProps) => {
   if (!notification) return null;
-  
-  // Se Usa un ref para almacenar el timer de la notificación, lo que nos permite limpiarlo 
-  // si el componente se desmonta o si se muestra una nueva notificación antes de que expire la anterior
-  const notificationTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Muestra una alerta verde si es éxito, o roja si es error
   const isSuccess = notification.type === "success";
 
   return (
-    <div className="fixed top-5 right-5 z-50" aria-live="polite" aria-atomic="true">
+    <div aria-live="polite" aria-atomic="true">
       <div
         className={`min-w-70 max-w-sm rounded-lg shadow-lg px-4 py-3 text-sm font-medium flex items-center gap-2 animate-[fadeIn_0.3s_ease-in-out] ${
           isSuccess ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"
