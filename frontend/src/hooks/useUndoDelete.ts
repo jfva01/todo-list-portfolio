@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Tarea } from "../types/Tarea";
 import type { Notification } from "../types/Notification";
 
@@ -21,13 +20,6 @@ export const useUndoDelete = ({
     showNotification,
     closeNotification
 }: UseUndoDeleteProps) => {
-    
-    const [pendingDeletes, setPendingDeletes] = useState<{
-        id: number;
-        item: Tarea;
-        index: number;
-        timeoutId: ReturnType<typeof setTimeout>;
-    }[]>([]);
 
     const deleteWithUndo = (id: number) => {
         const index = tareas.findIndex(t => t.id === id);
@@ -36,27 +28,17 @@ export const useUndoDelete = ({
         const item = tareas[index];
         if (!item) return;
 
-        // 1. Remover de UI
+        // 1. Remover tarea de UI
         removeFromUI(id);
 
         // 2. Timer para delete real
         const timeoutId = setTimeout(async () => {
             try {
                 await deleteOptimistic(id);
-
-                setPendingDeletes(prev =>
-                    prev.filter(p => p.id !== id)
-                );
             } catch (error) {
                 console.error(error);
             }
         }, 3000);
-
-        // 3. Guardar en cola
-        setPendingDeletes(prev => [
-            ...prev,
-            { id, item, index, timeoutId }
-        ]);
 
         // 4. Notificación + undo
         const { id: notificationId } = showNotification({
@@ -66,19 +48,11 @@ export const useUndoDelete = ({
             onAction: () => {
                 // Cancelar delete real
                 clearTimeout(timeoutId);
-
                 restoreOptimistic(item, index);
-
                 closeNotification(notificationId);
-
-                setPendingDeletes(prev =>
-                    prev.filter(p => p.id !== id)
-                );
             }
         });
     };
 
-    return {
-        deleteWithUndo
-    };
+    return { deleteWithUndo };
 };
