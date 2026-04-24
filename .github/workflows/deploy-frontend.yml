@@ -20,4 +20,4 @@ jobs:
           action: "upload"
           app_location: "frontend"
           output_location: "dist"
-          app_build_command: "npm run build"
+          app_build_command: "cd frontend && npm install && npm run build"
