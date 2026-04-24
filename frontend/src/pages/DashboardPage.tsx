@@ -1,5 +1,5 @@
 import { useTareas } from "../hooks/useTareas";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import type { Tarea } from "../types/Tarea";
 import type { Notification as NotificationModel } from "../types/Notification";
 import { Notification } from "../components/Notification";
@@ -8,6 +8,7 @@ import { TaskList } from "../components/TaskList";
 import { Header } from "../components/Header";
 import { useInactivityTimeout } from "../hooks/useInactivityTimeout";
 import { TodoListSkeleton } from "../components/TodoListSkeleton";
+import { useUndoDelete } from "../hooks/useUndoDelete";
 
 export default function DashboardPage() {
     // Hook para manejar el timeout de inactividad y cerrar sesión automáticamente
@@ -21,7 +22,34 @@ export default function DashboardPage() {
     const [searchTerm, setSearchTerm] = useState("");                                   // Estado para manejar el término de búsqueda en el filtro de tareas
     const [filterStatus, setFilterStatus] = useState< "todas" | "pendientes" | "completadas" >("todas");    // Estado para controlar el filtro de tareas (todas, pendientes o completadas)
     const [highlightedId, setHighlightedId] = useState<number | null>(null);            // Estado para resaltar temporalmente una tarea después de crearla o actualizarla
-    const notificationIdRef = useRef(0);
+    //const notificationIdRef = useRef(0);
+
+    // Mostrar notificaciones de éxito o error
+    const showNotification = ( 
+        messageOrConfig: string | Omit<NotificationModel, "id">,
+        type?: NotificationModel["type"]
+    ) => {
+        const id = crypto.randomUUID();
+
+        const notification: NotificationModel =
+            typeof messageOrConfig === "string"
+                ? { id, message: messageOrConfig, type: type || "info" }
+                : { ...messageOrConfig, id };
+
+        setNotifications(prev => [...prev, notification]);
+
+        const duration = notification.duration || 3000;
+
+        setTimeout(() => {
+            setNotifications(prev => prev.filter(n => n.id !== id));
+        }, duration);
+
+        return { id };
+    };
+
+    const closeNotification = (id: string) => {
+        setNotifications(prev => prev.filter(n => n.id !== id));
+    };
 
     // Alternar el estado de completada de una tarea
     const handleToggle = async (tarea: Tarea) => {
@@ -40,121 +68,18 @@ export default function DashboardPage() {
         }
     };
 
-    // Estado para almacenar temporalmente la tarea que se desea eliminar junto con su índice en la lista, para permitir deshacer la eliminación
-    const [pendingDeletes, setPendingDeletes] = useState<{
-        id: number;
-        item: Tarea;
-        index: number;
-        timeoutId: ReturnType<typeof setTimeout>;
-    }[]>([]);
+    const { deleteWithUndo } = useUndoDelete({
+        tareas,
+        removeFromUI,
+        restoreOptimistic,
+        deleteOptimistic,
+        showNotification,
+        closeNotification,
+    });
 
     // Función para manejar la eliminación de una tarea, que llama a deleteWithUndo para eliminar con opción de deshacer
     const handleDelete = (id: number) => {
         deleteWithUndo(id);
-    };
-
-    // Función para manejar la acción de deshacer la eliminación de una tarea. Restaura la tarea en la UI y 
-    // cancela el timer de eliminación definitiva, pasando los parámetros necesarios para identificar la tarea, 
-    // cancelar el timeout y cerrar la notificación correspondiente.
-    const handleUndo = (
-        item: Tarea,
-        index: number,
-        timeoutId: ReturnType<typeof setTimeout>,
-        taskId: number,
-        notificationId: number
-    ) => {
-        // 1. Cancelar eliminación real
-        clearTimeout(timeoutId);
-
-        // 2. Restaurar en UI
-        restoreOptimistic(item, index);
-
-        // 3. Limpiar cola
-        setPendingDeletes(prev =>
-            prev.filter(p => p.id !== taskId)
-        );
-
-        // 4. Cerrar toast
-        setNotifications(prev =>
-            prev.filter(n => n.id !== notificationId)
-        );
-    };
-
-    // Función para eliminar una tarea con opción de deshacer
-    const deleteWithUndo = (id: number) => {
-        // Encontrar el índice de la tarea a eliminar para poder restaurarla en caso de deshacer
-        const index = tareas.findIndex(t => t.id === id);
-        if (index === -1) return;
-        // Guardar la tarea a eliminar y su índice en el estado de pendingDelete para permitir deshacer la eliminación
-        const itemToDelete = tareas[index];
-        // Validar que la tarea a eliminar exista antes de proceder, 
-        // para evitar errores si el ID no es válido o si la tarea ya ha sido eliminada
-        if (!itemToDelete || index === -1) return;
-        // Eliminar la tarea de la UI de inmediato para una experiencia más rápida, 
-        // pero mantenerla en el estado para permitir deshacer
-        removeFromUI(id);
-        // Iniciar un timer de 3 segundos para eliminar definitivamente la tarea después de mostrar la notificación de eliminación
-        const timeoutId = setTimeout(async () => {
-            try {
-                await deleteOptimistic(id);
-
-                setPendingDeletes(prev =>
-                    prev.filter(p => p.id !== id)
-                );
-            } catch (error) {
-                console.error(error);
-            }
-        }, 3000);
-
-        // Guardar la tarea eliminada, su índice y el timeoutId en el estado de pendingDeletes para manejar múltiples eliminaciones con opción de deshacer
-        setPendingDeletes(prev => [
-            ...prev,
-            {
-                id,
-                item: itemToDelete,
-                index,
-                timeoutId
-            }
-        ]);
-        
-        // Mostrar una notificación con la opción de deshacer, pasando el ID de la notificación para 
-        // que la función de deshacer pueda cerrarla al hacer clic en "Deshacer"
-        const { id: notificationId } = showNotification({
-            message: `Tarea "${itemToDelete.titulo}" eliminada`,
-            type: "info",
-            actionLabel: "Deshacer",
-            onAction: () => handleUndo(itemToDelete, index, timeoutId, id, notificationId)
-        });
-    };
-
-    // Mostrar notificaciones de éxito o error
-    const showNotification = ( 
-        messageOrConfig: string | Omit<NotificationModel, "id">,
-        type?: NotificationModel["type"]
-    ) => {
-        const id = ++notificationIdRef.current;
-
-        const notification: NotificationModel =
-            typeof messageOrConfig === "string"
-                ? {
-                    id,
-                    message: messageOrConfig,
-                    type: type || "info"
-                }
-                : {
-                    ...messageOrConfig,
-                    id
-                };
-
-        setNotifications(prev => [...prev, notification]);
-
-        const timeoutId = setTimeout(() => {
-            setNotifications(prev =>
-                prev.filter(n => n.id !== id)
-            );
-        }, 3000);
-
-        return { id, timeoutId };
     };
 
     // Mostrar un mensaje de carga mientras se obtienen las tareas

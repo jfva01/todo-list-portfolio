@@ -166,11 +166,61 @@ Esto permite una base sólida antes de abstraer con librerías.
 
 ---
 
+## 🔔 Sistema de Notificaciones y Undo Delete
+
+Se implementó un sistema de notificaciones personalizado (toast system) sin librerías externas.
+
+**Características:**
+- Múltiples notificaciones simultáneas (stack vertical)
+- Auto-dismiss configurable (default: 3s)
+- Barra de progreso visual sincronizada con el timeout
+- Acciones embebidas (ej: Deshacer eliminación)
+
+**Ejemplo de uso:**
+```typescript
+showNotification({
+  message: `Tarea "${item.titulo}" eliminada`,
+  type: "info",
+  actionLabel: "Deshacer",
+  onAction: () => undoDelete(...)
+});
+```
+
+### 🧠 Undo Delete (custom hook)
+
+Se encapsuló la lógica en un hook independiente:
+```typescript
+useUndoDelete()
+```
+
+**Responsabilidades:**
+- Eliminar elemento de la UI inmediatamente (optimistic)
+- Programar eliminación real con setTimeout
+- Permitir cancelación (undo)
+- Restaurar elemento en su posición original
+- Sincronizar con sistema de notificaciones
+
+### 💡 Decisión técnica
+
+No se utilizó librería como:
+- react-hot-toast
+- sonner
+
+**Motivo:**
+- Comprender manejo manual de:
+- Estado
+- Timers
+- Sincronización UI/UX
+- Acciones asincrónicas
+
+---
+
 ## 💡 Posibles mejoras futuras
 - Migración a React Query
 - Normalización de estado
 - Caché inteligente
 - Paginación o virtualización
+- Migrar a librería especializada para reducir complejidad
 
 ---
 

@@ -5,6 +5,7 @@ export interface Notification {
   id: number; // Identificador único para cada notificación, para manejar múltiples notificaciones
   message: string;
   type: NotificationType;
+  duration?: number; // Duración opcional para mostrar la notificación, por defecto 3000ms
   actionLabel?: string;
   onAction?: () => void; // Función opcional para manejar la acción de la notificación, como "Deshacer"
 }

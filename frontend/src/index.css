@@ -25,12 +25,8 @@
 }
 
 @keyframes toastProgress {
-  from {
-    width: 100%;
-  }
-  to {
-    width: 0%;
-  }
+  from { width: 100%;}
+  to { width: 0%; }
 }
 
 .animate-toast-in {

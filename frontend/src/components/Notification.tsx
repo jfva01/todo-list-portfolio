@@ -18,7 +18,7 @@ export const Notification = ({
   return (
     <div aria-live="polite" aria-atomic="true">
       <div
-        className={`min-w-70 max-w-sm rounded-lg shadow-lg px-4 py-3 text-sm font-medium flex items-center gap-2 animate-[fadeIn_0.3s_ease-in-out] ${
+        className={`relative min-w-70 max-w-sm rounded-lg shadow-lg px-4 py-3 text-sm font-medium flex items-center gap-2 animate-[fadeIn_0.3s_ease-in-out] ${
           isSuccess ? "bg-green-50 text-green-700 border-green-200" : "bg-red-50 text-red-700 border-red-200"
         }`}
         role="status"
@@ -55,9 +55,14 @@ export const Notification = ({
           </button>
         )}
         <div
-          className={`absolute bottom-0 left-0 h-1 animate-toast-progress ${
+          className={`absolute bottom-0 left-0 h-1 ${
             isSuccess ? "bg-green-400" : "bg-red-400"
           }`}
+          style={{
+            width: "100%",
+            animation: "toastProgress linear forwards",
+            animationDuration: `${notification.duration || 3000}ms`
+          }}
         />
       </div>
     </div>
