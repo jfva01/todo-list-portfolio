@@ -188,3 +188,7 @@ F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\To
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\TodoApi.Tests.genruntimeconfig.cache
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\ref\TodoApi.Tests.dll
 F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\obj\Debug\net8.0\TodoApi.Tests.sourcelink.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\bin\Debug\net8.0\appsettings.Production.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\bin\Debug\net8.0\BCrypt.Net-Next.dll
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi.Tests\bin\Debug\net8.0\Microsoft.EntityFrameworkCore.InMemory.dll

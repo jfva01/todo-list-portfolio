@@ -207,7 +207,7 @@ No se utilizó librería como:
 - sonner
 
 **Motivo:**
-- Comprender manejo manual de:
+Comprender manejo manual de:
 - Estado
 - Timers
 - Sincronización UI/UX
