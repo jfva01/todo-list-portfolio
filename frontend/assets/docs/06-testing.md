@@ -2,63 +2,87 @@
 
 ## 📌 Enfoque general
 
-El proyecto implementa una estrategia de testing en múltiples niveles:
+El proyecto implementa una estrategia de testing en múltiples niveles, orientada a validar tanto la lógica interna del sistema como los flujos reales de usuario.
 
-- **Tests unitarios** → validan la lógica de negocio (backend)
-- **Tests End-to-End (E2E)** → validan flujos completos (frontend + backend)
+Se combinan:
 
-El objetivo es asegurar:
-
-- Correcto funcionamiento del sistema
-- Prevención de regresiones
-- Confianza en cambios futuros
+* **Tests unitarios (backend)** → validan lógica de negocio de forma aislada
+* **Tests de integración (backend)** → validan comportamiento real de la API
+* **Tests End-to-End (E2E)** → validan el sistema completo desde la perspectiva del usuario
 
 ---
 
-## 📊 Estrategia de Testing aplicada
+## 🎯 Objetivos
 
-En este proyecto se implementa una estrategia híbrida:
-
-- 🟢 **Unit Tests (Backend)**
-  - Validan lógica de negocio (Services)
-  - Rápidos y aislados
-
-- 🔴 **E2E Tests (Frontend + Backend)**
-  - Validan flujos reales del usuario
-  - Multi-browser con Playwright
-
-Actualmente no se implementan tests de integración, priorizando simplicidad y claridad.
+* Detectar errores tempranamente
+* Prevenir regresiones
+* Asegurar consistencia entre frontend y backend
+* Permitir refactorizaciones con confianza
 
 ---
 
-## 🧱 Tipos de testing implementados
+## 📊 Estrategia de testing
 
-### 1. Tests Unitarios (Backend)
+Se adopta un enfoque en tres niveles:
 
-Se enfocan en la capa de **Services**, donde reside la lógica de negocio.
+### 🟢 Unit Tests (Backend)
 
-### 🧠 ¿Por qué Services?
+* Enfocados en la capa de **Services**
+* Validan reglas de negocio
+* Aislados mediante mocks
 
-- Contienen reglas del sistema
-- Son independientes del framework web
-- Son fácilmente testeables con mocks
+### 🟡 Integration Tests (Backend)
+
+* Validan endpoints reales de la API
+* Incluyen acceso a base de datos
+* Verifican autenticación y autorización
+
+### 🔴 E2E Tests (Sistema completo)
+
+* Simulan interacción real de usuario
+* Ejecutados en múltiples navegadores
+* Validan integración frontend ↔ backend
+
+Este enfoque permite cubrir el sistema desde distintos niveles de confianza.
 
 ---
 
-### 🧪 Tecnologías utilizadas
+## 🧱 Tests unitarios (Backend)
 
-- xUnit
-- Moq
+### 🎯 Alcance
+
+Se testea la capa de **Services**, donde se concentra la lógica de negocio:
+
+* Creación de tareas
+* Validaciones de datos
+* Reglas del sistema
+* Interacción con repositorios
 
 ---
 
-### 🔍 Ejemplo de test
+### 🧠 Justificación
 
-```csharp id="u1v4mx"
+La capa de Services permite:
+
+* Testear sin dependencia de HTTP
+* Evitar acceso a base de datos real
+* Validar lógica de forma determinística
+
+---
+
+### 🧪 Tecnologías
+
+* xUnit
+* Moq
+
+---
+
+### 🔍 Ejemplo
+
+```csharp
 [Fact]
 public async Task CreateAsync_ShouldCreateTask_WhenDataIsValid()
 {
-    // Arrange
     var mockRepo = new Mock<ITareaRepository>();
     var service = new TareaService(mockRepo.Object);
 
@@ -68,51 +92,128 @@ public async Task CreateAsync_ShouldCreateTask_WhenDataIsValid()
         Descripcion = "Descripción"
     };
 
-    // Act
     var result = await service.CreateAsync(dto);
 
-    // Assert
     Assert.NotNull(result);
     mockRepo.Verify(r => r.AddAsync(It.IsAny<Tarea>()), Times.Once);
 }
 ```
 
+---
+
 ### ✅ Qué se valida
-- Creación de tareas válidas
-- Manejo de datos inválidos
-- Llamadas correctas al repositorio
-- Reglas de negocio
+
+* Reglas de negocio
+* Validación de inputs
+* Correcta interacción con repositorios
+* Casos exitosos y fallos controlados
+
+---
 
 ### 💡 Beneficios
-- Tests rápidos y aislados
-- No dependen de base de datos real
-- Permiten detectar errores temprano
+
+* Tests rápidos y determinísticos
+* Independientes de infraestructura
+* Facilitan refactorización segura
+
+---
+
+## 🟡 Tests de integración (Backend)
+
+### 🎯 Alcance
+
+Los tests de integración validan el comportamiento real de la API, incluyendo:
+
+* Endpoints HTTP
+* Serialización/deserialización
+* Integración con base de datos
+* Autenticación y autorización
+
+---
+
+### 🧠 Qué se valida
+
+* Respuestas correctas de la API
+* Persistencia de datos
+* Validación de ownership (seguridad por usuario)
+* Comportamiento ante errores reales
+
+---
+
+### ⚙️ Características
+
+* Uso de entorno de testing aislado
+* Base de datos de prueba (o en memoria)
+* Ejecución a través de la API (sin mocks)
+
+---
+
+### 💡 Ejemplos de casos cubiertos
+
+* Crear tarea autenticado
+* Obtener solo tareas del usuario
+* Intentar modificar tarea de otro usuario (rechazo)
+* Eliminación de tareas
+
+---
+
+### 🚀 Beneficios
+
+* Validación real del sistema
+* Mayor confianza que los unit tests
+* Detección de problemas de integración
+
+---
+
+### ⚖️ Trade-offs
+
+**Ventajas**
+
+* Alta fidelidad al comportamiento real
+* Detecta errores que los mocks no capturan
+
+**Desventajas**
+
+* Más lentos que unit tests
+* Mayor complejidad de configuración
 
 ---
 
 ## 🌐 Tests End-to-End (E2E)
 
-Se implementaron utilizando Playwright para validar flujos completos desde la perspectiva del usuario.
+Se utilizan para validar el sistema completo desde la perspectiva del usuario.
 
-### 🧪 Tecnologías utilizadas
-- Playwright
-- Testing multi-browser:
-  - Chromium
-  - Firefox
-  - WebKit
+---
 
-### 🔄 Flujo testeado
+### 🧪 Tecnologías
 
-El flujo principal de la aplicación:
+* Playwright
+* Ejecución multi-browser:
 
-- Login
-- Crear tarea
-- Marcar como completada
-- Eliminar tarea
+  * Chromium
+  * Firefox
+  * WebKit
 
-### 🧠 Ejemplo de test E2E
+---
 
-```csharp id="u1v4mx"
+### 🔄 Flujos cubiertos
+
+* Autenticación (login)
+* Creación de tareas
+* Actualización de estado
+* Eliminación de tareas
+
+Estos tests validan:
+
+* Integración frontend ↔ backend
+* Persistencia de datos
+* Manejo de estado en UI
+
+---
+
+### 🧠 Ejemplo
+
+```ts
 test('crear y eliminar tarea', async ({ page }) => {
   await page.goto('/');
 
@@ -126,54 +227,78 @@ test('crear y eliminar tarea', async ({ page }) => {
   await page.getByTestId('delete-todo-button').click();
 });
 ```
+
 ---
 
 ## ⚙️ Configuraciones clave
 
-### 🔐 storageState (autenticación persistente)
+### 🔐 Autenticación persistente
 
-Se utiliza para evitar login en cada test:
+Uso de `storageState` para evitar login en cada test:
 
-```csharp id="u1v4mx"
+```ts
 test.use({ storageState: 'auth.json' });
 ```
 
-### 🎯 Selectores robustos
-- getByRole
-- getByTestId
-- filtros por texto
+---
 
-Evita tests frágiles
+### 🎯 Selectores robustos
+
+Se priorizan:
+
+* `getByRole`
+* `getByTestId`
+* queries por texto
+
+Esto reduce fragilidad ante cambios de UI.
+
+---
 
 ### ⚡ Paralelización
-- Tests ejecutados en múltiples navegadores
-- Mejora tiempos de ejecución
+
+* Ejecución en múltiples navegadores
+* Mejora de tiempos de ejecución
 
 ---
 
-## ⚠️ Desafíos encontrados
+## ⚠️ Desafíos abordados
 
-Durante la implementación de testing se resolvieron problemas como:
+Durante la implementación se resolvieron problemas comunes:
 
-- ❌ Selectores inestables
-- ❌ Dependencia del estado inicial
-- ❌ Problemas de sincronización (timing)
-- ❌ Manejo de autenticación en tests
-
----
-
-## 💡 Decisiones técnicas
-- Separar tests unitarios y E2E
-- Priorizar cobertura de lógica de negocio
-- Validar flujos reales del usuario
-- Evitar tests acoplados a UI frágil
+* Selectores inestables
+* Dependencia del estado inicial
+* Problemas de sincronización (timing)
+* Manejo de autenticación en tests
 
 ---
 
-## 🚀 Posibles mejoras futuras
-- Tests de integración (API + DB)
-- Coverage reports (cobertura de código)
-- Tests visuales (UI regression)
-- CI/CD con ejecución automática de tests
+## 🔐 Relación con la arquitectura
+
+La estrategia de testing está alineada con la arquitectura del proyecto:
+
+* La separación en capas permite testear **Services de forma aislada**
+* El uso de repositorios facilita el uso de **mocks**
+* Los tests de integración validan la API real y la base de datos
+* La autenticación con JWT se valida en tests de integración y E2E
+* La validación de ownership se cubre en múltiples niveles
 
 ---
+
+## 🚀 Mejoras futuras
+
+* Reportes de cobertura (coverage)
+* Testing visual (UI regression)
+* Integración en pipelines CI/CD
+* Tests de performance
+
+---
+
+## 🧠 Conclusión
+
+La estrategia de testing implementada cubre múltiples niveles:
+
+* Lógica de negocio (unit tests)
+* Integración real del backend (integration tests)
+* Flujos completos del sistema (E2E)
+
+Esto permite detectar errores en distintas capas y asegurar un alto nivel de confiabilidad del sistema.
