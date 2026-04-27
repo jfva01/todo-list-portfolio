@@ -25,8 +25,8 @@ Aplicación full stack orientada a demostrar prácticas modernas de desarrollo, 
 
 ## 🌍 URLs del proyecto
 
-🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net)
-🔗 Backend (API): [(URL de App Service)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net)
+🔗 Frontend: [(URL de Static Web Apps)](https://ashy-desert-0d8175810.1.azurestaticapps.net)  
+🔗 Backend (API): [(URL de App Service)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net)  
 📄 Swagger: [(URL + /swagger)](https://todolistapi-bzd4bbbpcrbwdah8.brazilsouth-01.azurewebsites.net/swagger/index.html)
 
 ---
@@ -35,7 +35,7 @@ Aplicación full stack orientada a demostrar prácticas modernas de desarrollo, 
 
 Puedes probar la aplicación utilizando la siguiente cuenta demo:
 
-Email: demo@todoapp.com
+Email: demo@todoapp.com  
 Password: Demo123!
 
 ⚠️ Nota: La cuenta demo se reinicia periódicamente, por lo que los datos pueden eliminarse automáticamente.
