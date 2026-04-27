@@ -226,30 +226,23 @@ Esto permite asegurar el comportamiento esperado de la lógica antes de llegar a
 
 ## ✨ Funcionalidades
 - Autenticación con JWT
-- Crear tareas
-- Listar tareas
-- Editar tareas
-- Eliminar tareas
+- Crear, listar, editar y eliminar tareas
 - Marcar tareas como completadas
+- Deshacer para tareas eliminadas por accidente
 - Búsqueda por título o descripción
 - Filtro por estado: todas, pendientes y completadas
 - Agrupación de tareas por fecha de creación
 - Notificaciones tipo toast para éxito y error
 - Protección de rutas
 - Logout automático por inactividad
-- Interfaz moderna con Tailwind CSS
 - Modo oscuro (Dark Mode)
-- Validaciones en backend
-- Arquitectura por capas en API REST
-- Pruebas unitarias de servicios
-- Tests E2E (Playwright)
 
 ---
 
 ## 🔌 Endpoints principales
 
-- POST /api/auth/login
-- GET /api/info/version
+- POST /api/auth/login → autenticarse en la aplicación
+- GET /api/info/version → obtener número de versión
 - GET /api/tareas → obtener todas las tareas
 - GET /api/tareas/{id} → obtener tarea por id
 - POST /api/tareas → crear nueva tarea
