@@ -106,17 +106,23 @@ public class TareasController : ControllerBase
         // Obtener el ID del usuario autenticado
         var userId = GetUserId();
 
-        var tarea = new Tarea
-        {
-            Id = id,
-            Titulo = dto.Titulo!,
-            Descripcion = dto.Descripcion,
-            Completada = dto.Completada ?? false
-        };
+        var tareaExistente = await _service.GetTareaByIdAsync(id, userId);
+
+        if (tareaExistente == null)
+            return NotFound();
+
+        if (dto.Titulo != null)
+            tareaExistente.Titulo = dto.Titulo;
+
+        if (dto.Descripcion != null)
+            tareaExistente.Descripcion = dto.Descripcion;
+
+        if (dto.Completada.HasValue)
+            tareaExistente.Completada = dto.Completada.Value;
 
         try
         {
-            await _service.UpdateTareaAsync(tarea, userId);
+            await _service.UpdateTareaAsync(tareaExistente, userId);
             _logger.LogInformation("Tarea de usuario {userId} actualizada exitosamente.", userId);
         }
         catch (KeyNotFoundException)
