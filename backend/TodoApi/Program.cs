@@ -41,6 +41,20 @@ builder.Services.AddHostedService<DemoCleanupService>();
 
 try
 {
+    // Habilitamos el auto-logging de errores internos de Serilog para diagnosticar problemas de configuración.
+    Serilog.Debugging.SelfLog.Enable(msg =>
+    {
+        Console.WriteLine(msg);
+    });
+
+    // Validamos que la cadena de conexión no sea nula o vacía antes de configurar el logger.
+    if (string.IsNullOrWhiteSpace(connectionString))
+    {
+        throw new Exception("Connection string de Serilog es null o vacía.");
+    }
+
+    // Configuramos Serilog para registrar en consola y en una tabla de SQL Server. 
+    // Ajustamos los niveles de log para evitar ruido excesivo.
     Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
     .MinimumLevel.Override("Microsoft", Serilog.Events.LogEventLevel.Warning)
@@ -58,13 +72,19 @@ try
 }
 catch (Exception ex)
 {
-    // fallback: solo consola
+    // Si ocurre un error al configurar Serilog, lo registramos en la consola 
+    // para no perder la información del error. 
+    Console.WriteLine(ex);
+
+    // Configuramos un logger de respaldo mínimo para que la aplicación pueda 
+    // seguir funcionando aunque Serilog falle.
     Log.Logger = new LoggerConfiguration()
         .WriteTo.Console()
         .CreateLogger();
 
     Log.Error(ex, "Error configurando Serilog MSSqlServer");
 }
+
 
 builder.Host.UseSerilog();
 
