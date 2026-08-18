@@ -12,6 +12,7 @@ namespace TodoApi.Data
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false)
+                .AddJsonFile("appsettings.Development.json", optional: true)
                 .Build();
 
             var connectionString = configuration.GetConnectionString("DefaultConnection");

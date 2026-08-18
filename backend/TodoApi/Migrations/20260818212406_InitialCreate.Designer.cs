@@ -12,15 +12,15 @@ using TodoApi.Data;
 namespace TodoApi.Migrations
 {
     [DbContext(typeof(TodoDbContext))]
-    [Migration("20260402235558_AddIndexUsuarioId")]
-    partial class AddIndexUsuarioId
+    [Migration("20260818212406_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

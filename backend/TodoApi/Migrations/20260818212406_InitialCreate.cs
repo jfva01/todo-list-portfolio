@@ -6,18 +6,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TodoApi.Migrations
 {
     /// <inheritdoc />
-    public partial class AddIndexUsuarioId : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<long>(
-                name: "UsuarioId",
-                table: "Tareas",
-                type: "bigint",
-                nullable: false,
-                defaultValue: 0L);
-
             migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
@@ -33,37 +26,43 @@ namespace TodoApi.Migrations
                     table.PrimaryKey("PK_Usuarios", x => x.Id);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Tareas",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Titulo = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Descripcion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Completada = table.Column<bool>(type: "bit", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UsuarioId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Tareas", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Tareas_Usuarios_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "Usuarios",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Tareas_UsuarioId",
                 table: "Tareas",
                 column: "UsuarioId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Tareas_Usuarios_UsuarioId",
-                table: "Tareas",
-                column: "UsuarioId",
-                principalTable: "Usuarios",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Tareas_Usuarios_UsuarioId",
-                table: "Tareas");
+            migrationBuilder.DropTable(
+                name: "Tareas");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Tareas_UsuarioId",
-                table: "Tareas");
-
-            migrationBuilder.DropColumn(
-                name: "UsuarioId",
-                table: "Tareas");
         }
     }
 }

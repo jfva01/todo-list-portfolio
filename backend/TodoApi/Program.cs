@@ -17,15 +17,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection");
+
+if(string.IsNullOrWhiteSpace(connectionString)){
+    throw new InvalidOperationException(
+        "La cadena de conexión 'DefaultConnection' no está configurada."
+    );
+}
+
 // Usamos Inyección de Dependencias para el contexto de la base de datos
 builder.Services.AddDbContext<TodoDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")
     ));
-
-var connectionString =
-    builder.Configuration.GetConnectionString("DefaultConnection") ??
-    Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection");
 
 // Usamos inyección de Dependencias para los repositorios y servicios
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();

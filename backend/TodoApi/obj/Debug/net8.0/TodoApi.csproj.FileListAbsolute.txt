@@ -159,11 +159,6 @@ F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\runtimes
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\runtimes\browser\lib\net8.0\System.Text.Encodings.Web.dll
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets.build.json
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets.development.json
-F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets\msbuild.TodoApi.Microsoft.AspNetCore.StaticWebAssets.props
-F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets\msbuild.build.TodoApi.props
-F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.TodoApi.props
-F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.TodoApi.props
-F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\staticwebassets.pack.json
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\scopedcss\bundle\TodoApi.styles.css
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.csproj.Up2Date
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.dll
@@ -175,3 +170,11 @@ F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\obj\Debug\net8.0\TodoApi.
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\BCrypt.Net-Next.dll
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\appsettings.Production.json
 F:\Documents\Jorge\todo-list-portfolio\backend\ToDoApi\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\bin\Debug\net8.0\TodoApi.staticwebassets.endpoints.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\rpswa.dswa.cache.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\rjimswa.dswa.cache.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\rjsmrazor.dswa.cache.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\rjsmcshtml.dswa.cache.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\staticwebassets.build.json.cache
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+F:\Documents\Jorge\todo-list-portfolio\backend\TodoApi\obj\Debug\net8.0\swae.build.ex.cache
