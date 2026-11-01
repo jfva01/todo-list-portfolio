@@ -1,0 +1,11 @@
+# .NET
+bin/
+obj/
+TestResults/
+*.user
+*.suo
+.vs/
+
+# Logs y sistema
+*.log
+.DS_Store
